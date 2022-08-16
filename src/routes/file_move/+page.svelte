@@ -1,5 +1,9 @@
 <script lang="ts">
+    import "../pages.scss";
+    import Entries from "../entries.svelte";
+
     interface FileMovePath {
+        [key: string]: string | undefined;
         current: string;
         new: string;
         name?: string;
@@ -40,74 +44,27 @@
             },
             body: JSON.stringify(fileMovePaths)
         });
-        
+        fileMovePaths.data = [];
     }
 </script>
 
 <div style="margin-left: 10px;">
-    <h1>File Move Paths</h1>
+    <h1 style="color: #eceff4;">File Move Paths</h1>
     <form on:submit|preventDefault={onAdd}>
         <label>name*</label>
-        <input type="text" bind:value={fileMovePath.name}>
+        <input type="text" class="inner-each top selected" bind:value={fileMovePath.name}>
         <label>current</label>
-        <input type="text" bind:value={fileMovePath.current}>
+        <input type="text" class="inner-each middle selected" bind:value={fileMovePath.current}>
         <label>new</label>
-        <input type="text" bind:value={fileMovePath.new}>
-        <button type="submit">Add</button>
+        <input type="text" class="inner-each middle selected" bind:value={fileMovePath.new}>
+        <div style="display: flex; flex-direction: row; margin-left: 100px; width: 200px">
+            <button type="button" class="button left selected" on:click={onAdd}>Add</button>
+            <button type="button" class="button right selected" on:click={onSubmit}>Submit</button>
+        </div>
     </form>
 
-    <button on:click={onSubmit}>Submit</button>
 </div>
 
 <div style="margin-left: 10px;">
-    {#each fileMovePaths.data as entry, index}
-        <div class="outer-each">
-            <div class="inner-each top">{entry.name}</div>
-            <div class="inner-each middle">{entry.current}</div>
-            <div class="inner-each bottom">{entry.new}</div>
-        </div>
-    {/each}
+    <Entries entries={fileMovePaths} items={["name", "current", "new"]}/>
 </div>
-
-<style lang="scss">
-    form {
-        display: grid;
-        grid-template-columns: 100px 200px;
-    }
-
-    .inner-each {
-        display: flex;
-        border: 1px solid gray;
-        padding: 5px;
-        &.top {
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-        }
-
-        &.middle {
-            border-top: 0px;
-            border-bottom: 0px;
-        }
-        
-        &.bottom {
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
-        }
-    }
-
-    .outer-each {
-        display: grid;
-        width: 200px;
-        //padding: 5px;
-        margin: 10px;
-        margin-left: 100px;
-        //border: 1px solid gray;
-        border-radius: 10px;
-    }
-
-    button {
-        margin-left: 100px;
-        width: 100px;
-    }
-
-</style>

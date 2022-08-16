@@ -15,4 +15,5 @@ export default (request: VercelRequest, response: VercelResponse) => {
 	}).catch((err) => {
 		response.status(500).json({ error: err });
 	});
+	client.close();
 };

@@ -15,6 +15,7 @@ export default (request: VercelRequest, response: VercelResponse) => {
 		const collection = client.db("data").collection("file_delete_paths");
 		try {
 			let body = request.body;
+			let tmp: FileDeletePaths[] = []
 			for (let i = 0; i < body.data.length; i++) {
 				let data: FileDeletePaths = {
 					"path": body.data[i]["path"],  // required path
@@ -25,8 +26,9 @@ export default (request: VercelRequest, response: VercelResponse) => {
 				if ("name" in body.data[i]) {
 					data.name = body.data[i]["name"];  // optional name
 				}
-				collection.insertOne(data);
+				tmp.push(data);
 			}
+			collection.insertMany(tmp);
 			response.status(200).send(request.body);
 		} catch (err) {
 			response.status(400).json({ error: "bad body format" });
@@ -34,4 +36,5 @@ export default (request: VercelRequest, response: VercelResponse) => {
 	}).catch((err) => {
 		response.status(500).json({ error: "could not connect to database" });
 	});
+	client.close();
 };

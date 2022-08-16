@@ -1,27 +1,34 @@
 <script lang="ts">
-    interface fileDeletePath {
+    import "../pages.scss";
+    import Entries from "../entries.svelte";
+
+    interface FileDeletePath {
+        [key: string]: string | undefined;
         path: string;
         redirect?: string;
         name?: string;
     }
 
-    interface fileDeletePaths {
-        data: fileDeletePath[];
+    interface FileDeletePaths {
+        data: FileDeletePath[];
     }
 
-    let fileDeletePath: fileDeletePath = {
+    let fileDeletePath: FileDeletePath = {
         path: "",
         redirect: "",
         name: ""
     };
 
-    let fileDeletePaths: fileDeletePaths = {
+    let fileDeletePaths: FileDeletePaths = {
         data: []
     };
 
     function onAdd() {
         if (fileDeletePath.name === "") {
             delete fileDeletePath.name;
+        }
+        if (fileDeletePath.redirect === "") {
+            delete fileDeletePath.redirect;
         }
         fileDeletePaths.data.push(fileDeletePath);
         fileDeletePaths = fileDeletePaths;
@@ -45,69 +52,21 @@
 </script>
 
 <div style="margin-left: 10px;">
-    <h1>File Delete Paths</h1>
+    <h1 style="color: #eceff4;">File Delete Paths</h1>
     <form on:submit|preventDefault={onAdd}>
         <label>name*</label>
-        <input type="text" bind:value={fileDeletePath.name}>
+        <input type="text" class="inner-each top selected" bind:value={fileDeletePath.name}>
         <label>path</label>
-        <input type="text" bind:value={fileDeletePath.path}>
+        <input type="text" class="inner-each middle selected" bind:value={fileDeletePath.path}>
         <label>redirect*</label>
-        <input type="text" bind:value={fileDeletePath.redirect}>
-        <button type="submit">Add</button>
+        <input type="text" class="inner-each middle selected" bind:value={fileDeletePath.redirect}>
+        <div style="display: flex; flex-direction: row; margin-left: 100px; width: 200px">
+            <button type="button" class="button left selected" on:click={onAdd}>Add</button>
+            <button type="button" class="button right selected" on:click={onSubmit}>Submit</button>
+        </div>
     </form>
-
-    <button on:click={onSubmit}>Submit</button>
 </div>
 
 <div style="margin-left: 10px;">
-    {#each fileDeletePaths.data as entry, index}
-        <div class="outer-each">
-            <div class="inner-each top">{entry.name || ""}</div>
-            <div class="inner-each middle">{entry.path}</div>
-            <div class="inner-each bottom">{entry.redirect || ""}</div>
-        </div>
-    {/each}
+    <Entries entries={fileDeletePaths} items={["name", "path", "redirect"]}/>
 </div>
-
-<style lang="scss">
-    form {
-        display: grid;
-        grid-template-columns: 100px 200px;
-    }
-
-    .inner-each {
-        display: flex;
-        border: 1px solid gray;
-        padding: 5px;
-        &.top {
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-        }
-
-        &.middle {
-            border-top: 0px;
-            border-bottom: 0px;
-        }
-        
-        &.bottom {
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
-        }
-    }
-
-    .outer-each {
-        display: grid;
-        width: 200px;
-        //padding: 5px;
-        margin: 10px;
-        margin-left: 100px;
-        //border: 1px solid gray;
-        border-radius: 10px;
-    }
-
-    button {
-        margin-left: 100px;
-        width: 100px;
-    }
-
-</style>
