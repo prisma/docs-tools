@@ -1,5 +1,6 @@
 import os
-from pymongo import MongoClient, ServerApi
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 from http.server import BaseHTTPRequestHandler
 from datetime import datetime
