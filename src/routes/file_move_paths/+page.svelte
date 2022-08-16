@@ -20,7 +20,7 @@
     };
 
     function onAdd() {
-        if (fileMovePath.name = "") {
+        if (fileMovePath.name === "") {
             delete fileMovePath.name;
         }
         fileMovePaths.data.push(fileMovePath);
@@ -65,5 +65,9 @@
 {/each}
 
 <style lang="scss">
+    form {
+        display: grid;
+        grid-template-columns: 100px 200px;
+    }
 
 </style>
