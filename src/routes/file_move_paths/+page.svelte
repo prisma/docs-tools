@@ -32,13 +32,14 @@
     }
 
     function onSubmit() {
-        fetch("/api/file_move_paths", {
+        let response = fetch("/api/file_move_paths", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(fileMovePaths)
         });
+        
     }
 </script>
 
