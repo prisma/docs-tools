@@ -6,8 +6,7 @@ export default (request: VercelRequest, response: VercelResponse) => {
 	dotenv.config();
 	const client = new MongoClient(process.env.MONGODB_URI || "");
 	client.connect().then(() => {
-		const db = client.db("data");
-		const collection = db.collection("file_move_paths");
+		const collection = client.db("data").collection("file_move_paths");
 		collection.find({}).toArray().then((docs) => {
 			response.status(200).json(docs);
 		}).catch((err) => {
