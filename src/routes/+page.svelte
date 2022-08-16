@@ -1,5 +1,5 @@
 <script lang="ts">
-
+    import Selector from "./selector.svelte";
 </script>
 
 <h1>Welcome to SvelteKit</h1>
