@@ -32,7 +32,7 @@
     }
 
     function onSubmit() {
-        let response = fetch("/api/file_move_paths", {
+        let response = fetch("/api/create_file_move_paths", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
