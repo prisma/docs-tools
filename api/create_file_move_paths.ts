@@ -27,9 +27,9 @@ export default (request: VercelRequest, response: VercelResponse) => {
 				collection.insertOne(data);
 			}
 		} catch (err) {
-			response.status(500).json({ error: err });
+			response.status(400).json({ error: "bad body format" });
 		}
 	}).catch((err) => {
-		response.status(500).json({ error: err });
+		response.status(500).json({ error: "could not connect to database" });
 	});
 };
