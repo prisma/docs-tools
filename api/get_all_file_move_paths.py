@@ -6,7 +6,7 @@ from datetime import datetime
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        client = MongoClient(os.environ["MONGODB_URI"])
+        client = MongoClient(os.environ.get("MONGODB_URI"))
         entries = client.data.file_move_paths.find()
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
