@@ -15,8 +15,8 @@ export default (request: VercelRequest, response: VercelResponse) => {
 		const db = client.db("data");
 		const collection = db.collection("file_move_paths");
 		try {
-			//let body = JSON.parse(request.body);
-			/*for (let i = 0; i < body.data.length; i++) {
+			let body = request.body;
+			for (let i = 0; i < body.data.length; i++) {
 				let data: FileMovePaths = {
 					"current": body.data[i]["current"],  // required current path
 					"new": body.data[i]["new"]  // required new path
@@ -25,7 +25,7 @@ export default (request: VercelRequest, response: VercelResponse) => {
 					data.name = body.data[i]["name"];  // optional name
 				}
 				collection.insertOne(data);
-			}*/
+			}
 			response.status(200).send(request.body);
 		} catch (err) {
 			response.status(400).json({ error: "bad body format" });
