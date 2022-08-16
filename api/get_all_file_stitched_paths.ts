@@ -7,7 +7,7 @@ export default (request: VercelRequest, response: VercelResponse) => {
 	const client = new MongoClient(process.env.MONGODB_URI || "");
 	client.connect().then(() => {
 		const collection = client.db("data").collection("file_stitched_paths");
-		collection.find({}).toArray().then((docs) => {
+		collection.find(request.body).toArray().then((docs) => {
 			response.status(200).json(docs);
 		}).catch((err) => {
 			response.status(500).json({ error: err });
