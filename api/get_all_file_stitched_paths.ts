@@ -1,9 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import * as dotenv from 'dotenv';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 export default (request: VercelRequest, response: VercelResponse) => {
-	let ObjectId = require('mongodb').ObjectId;
 	dotenv.config();
 	const client = new MongoClient(process.env.MONGODB_URI || "");
 	client.connect().then(() => {
@@ -26,6 +25,7 @@ export default (request: VercelRequest, response: VercelResponse) => {
 		});
 	}).catch((err) => {
 		response.status(500).json({ error: err });
+	}).finally(() => {
+		client.close();
 	});
-	client.close();
 };

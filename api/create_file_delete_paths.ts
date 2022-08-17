@@ -35,6 +35,7 @@ export default (request: VercelRequest, response: VercelResponse) => {
 		}
 	}).catch((err) => {
 		response.status(500).json({ error: "could not connect to database" });
+	}).finally(() => {
+		client.close();
 	});
-	client.close();
 };
