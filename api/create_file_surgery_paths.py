@@ -9,12 +9,14 @@ app = Flask(__name__)
 @app.route('/<path:path>')
 def catch_all(path):
     from flask import request
-    try: body = request.form if type(request.form) is dict else {}
-    except: body = {}
+    if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
+    body = request.json
     data = [{
         "name": i["name"] if "name" in i.keys() else None,
         "new": i["new"],
         "curret": i["current"],
         "redirect": i["redirect"] if "redirect" in i.keys() else None
     } for i in body["data"]]
-    return Response(json.dumps([{j:i[j] for j in i.keys() if i[j] != None} for i in data]), mimetype='application/json')
+    client = MongoClient(os.environ['MONGODB_URI'])
+    client.data.file_surgery_paths.insert_many(data)
+    return Response(client.data.file_surgery_paths.insert_many(data))
