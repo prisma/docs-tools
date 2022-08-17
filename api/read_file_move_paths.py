@@ -27,5 +27,5 @@ def catch_all(path):
         "current": i["current"],
         "new": i["new"]
         } for i in client.data.file_move_paths.find(args)]
-    return Response(body, mimetype='application/json')
+    #return Response(body, mimetype='application/json')
     return Response(json.dumps([{j:i[j] for j in i.keys() if i[j] != None} for i in data]), mimetype='application/json')
