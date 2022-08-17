@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
-def catch_all():
+def catch_all(path):
     args = {}
     #if "_id" in self.headers.keys():
     #    args["_id"] = self.headers["_id"]
