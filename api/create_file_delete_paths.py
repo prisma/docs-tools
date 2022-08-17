@@ -16,5 +16,5 @@ def catch_all(path):
         "path": i["path"],
         "redirect": i["redirect"] if "redirect" in i.keys() else None
     } for i in body["data"]]
-    MongoClient(os.environ['MONGODB_URI']).data.file_surgery_paths.insert_many([{j:i[j] for j in i.keys() if i[j] != None} for i in data])
+    MongoClient(os.environ['MONGODB_URI']).data.file_delete_paths.insert_many([{j:i[j] for j in i.keys() if i[j] != None} for i in data])
     return Response("OK")

@@ -16,7 +16,10 @@ def catch_all(path):
         "name": i["name"] if "name" in i.keys() else None,
         "dest": i["dest"],
         "header": i["header"],
-        "body": [{"key": client.data.file_surgery_paths.find_one({"new": i["body"][j]["key"]})["_id"], "index": i["body"][j]["index"]} for j in i["body"]]
+        "body": [{
+            "key": client.data.file_surgery_paths.find_one({"new": j["key"]})["_id"],
+            "index": j["index"]
+        } for j in i["body"]]
     } for i in body["data"]]
     client.data.file_surgery_paths.insert_many([{j:i[j] for j in i.keys() if i[j] != None} for i in data])
     return Response("OK")
