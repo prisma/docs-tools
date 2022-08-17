@@ -8,7 +8,7 @@ class handler(BaseHTTPRequestHandler):
         from pymongo import MongoClient
         client = MongoClient(os.environ['MONGODB_URI'])
         self.send_response(200)
-        self.send_header('Content-type','text/plain')
+        self.send_header('Content-type','application/json')
         self.end_headers()
-        self.wfile.write("testing 123".encode())
+        self.wfile.write([{"name": i["name"], "dest": i["dest"], "header": i["header"], "body": [{"key": client.data.file_stitched_paths.find_one({"_id": j["key"]}), "index": j["index"]} for j in i["body"]]} for i in client.data.file_stitched_paths.find()])
         return
