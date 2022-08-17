@@ -5,7 +5,8 @@ import json
 from flask import Flask, Response
 app = Flask(__name__)
 
-@app.route('/read_file_move_paths')
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
 def catch_all():
     args = {}
     #if "_id" in self.headers.keys():
