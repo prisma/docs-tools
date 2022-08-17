@@ -40,8 +40,8 @@
     }
 
     function onSubmit() {
-        let response = fetch("/api/create_file_move_paths", {
-            method: "POST",
+        let response = fetch("/api/file_move_paths", {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },

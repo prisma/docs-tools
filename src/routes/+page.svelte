@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<h1>Welcome to the Migration Data Collection Platform</h1>
+<h1>Welcome to the Docs Migration Data Collection Platform</h1>
 
 <style lang="scss">
     h1 {

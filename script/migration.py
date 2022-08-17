@@ -2,7 +2,7 @@ import os
 import shutil
 from typing import Dict, List, Tuple
 
-from mongo import (
+from api import (
     get_file_move_paths,
     get_file_surgery_paths,
     get_file_delete_paths,
@@ -16,6 +16,9 @@ file_move_paths: Dict[str, str] = get_file_move_paths()
 file_surgery_paths: Dict[str, Tuple[str, str | None]] = get_file_surgery_paths()
 file_delete_paths: Dict[str, str | None] = get_file_delete_paths()
 
+
+# clear new directory
+shutil.rmtree(new_content_dir)
 
 # move files around
 print("copying started...\n")

@@ -43,8 +43,8 @@
     }
 
     function onSubmit() {
-        let response = fetch("/api/create_file_surgery_paths", {
-            method: "POST",
+        let response = fetch("/api/file_surgery_paths", {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
