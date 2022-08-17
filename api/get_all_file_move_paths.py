@@ -20,6 +20,6 @@ class handler(BaseHTTPRequestHandler):
             "name": i["name"] if "name" in i.keys() else None,
             "current": i["current"],
             "new": i["new"]
-            } for i in client.data.file_delete_paths.find(filter=args)]
+            } for i in client.data.file_move_paths.find(filter=args)]
         self.wfile.write(json.dumps([{j:i[j] for j in i.keys() if i[j] != None} for i in data]).encode())
         return
