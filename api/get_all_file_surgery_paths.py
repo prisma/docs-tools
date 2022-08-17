@@ -25,7 +25,7 @@ class handler(BaseHTTPRequestHandler):
             "name": i["name"] if "name" in i.keys() else None,
             "current": i["current"],
             "new": i["new"],
-            "redirect": i["redirect"] if "redirect" in i.keys(args) else None
-            } for i in client.data.file_surgery_paths.find()]
+            "redirect": i["redirect"] if "redirect" in i.keys() else None
+            } for i in client.data.file_surgery_paths.find(args)]
         self.wfile.write(json.dumps([{j:i[j] for j in i.keys() if i[j] != None} for i in data]).encode())
         return
