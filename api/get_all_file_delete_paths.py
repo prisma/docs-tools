@@ -20,7 +20,7 @@ class handler(BaseHTTPRequestHandler):
         self.send_header('Content-type','application/json')
         self.end_headers()
         data = [{
-            "_id": i["_id"],
+            "_id": str(i["_id"]),
             "name": i["name"] if "name" in i.keys() else None,
             "path": i["path"],
             "redirect": i["redirect"] if "redirect" in i.keys() else None
