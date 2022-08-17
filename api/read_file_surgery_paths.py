@@ -30,5 +30,4 @@ def catch_all(path):
         "new": i["new"],
         "redirect": i["redirect"] if "redirect" in i.keys() else None
         } for i in client.data.file_surgery_paths.find(args)]
-
     return Response(json.dumps([{j:i[j] for j in i.keys() if i[j] != None} for i in data]), mimetype='application/json')

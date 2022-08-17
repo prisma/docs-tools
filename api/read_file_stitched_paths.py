@@ -29,7 +29,6 @@ def catch_all(path):
             "index": j["index"]
             } for j in i["body"]]
         } for i in client.data.file_stitched_paths.find(args)]
-
     return Response(json.dumps([{j:i[j] for j in i.keys() if i[j] != None} for i in data]), mimetype='application/json')
 
 

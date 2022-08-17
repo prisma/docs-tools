@@ -27,5 +27,4 @@ def catch_all(path):
         "path": i["path"],
         "redirect": i["redirect"] if "redirect" in i.keys() else None
         } for i in client.data.file_delete_paths.find(args)]
-
     return Response(json.dumps([{j:i[j] for j in i.keys() if i[j] != None} for i in data]), mimetype='application/json')
