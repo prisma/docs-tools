@@ -16,11 +16,13 @@ def catch_all(path):
         args["_id"] = body["_id"]
     if "name" in body.keys():
         args["name"] = body["name"]
-    if "current" in body.keys():
-        args["current"] = body["current"]
-    if "new" in body.keys():
-        args["new"] = body["new"]
+    if "dest" in body.keys():
+        args["dest"] = body["dest"]
+    if "header" in body.keys():
+        args["header"] = body["header"]
+    if "body" in body.keys():
+        args["body"] = body["body"]
     client = MongoClient(os.environ['MONGODB_URI'])
-    data = client.data.file_move_paths.delete_many(args)
+    data = client.data.file_stitched_paths.delete_many(args)
     
     return Response(json.dumps({"deleted": data.deleted_count}), mimetype='application/json')

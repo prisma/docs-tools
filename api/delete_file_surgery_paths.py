@@ -20,7 +20,9 @@ def catch_all(path):
         args["current"] = body["current"]
     if "new" in body.keys():
         args["new"] = body["new"]
+    if "redirect" in body.keys():
+        args["redirect"] = body["redirect"]
     client = MongoClient(os.environ['MONGODB_URI'])
-    data = client.data.file_move_paths.delete_many(args)
+    data = client.data.file_surgery_paths.delete_many(args)
     
     return Response(json.dumps({"deleted": data.deleted_count}), mimetype='application/json')
