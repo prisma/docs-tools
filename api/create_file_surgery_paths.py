@@ -5,8 +5,8 @@ import json
 from flask import Flask, Response
 app = Flask(__name__)
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
+@app.route('/', defaults={'path': ''}, methods=['PUTS'])
+@app.route('/<path:path>', methods=['PUTS'])
 def catch_all(path):
     from flask import request
     if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
@@ -19,4 +19,4 @@ def catch_all(path):
     } for i in body["data"]]
     client = MongoClient(os.environ['MONGODB_URI'])
     client.data.file_surgery_paths.insert_many(data)
-    return Response(client.data.file_surgery_paths.insert_many(data))
+    return Response("OK", mimetype='text/plain', status=200)
