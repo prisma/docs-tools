@@ -21,5 +21,5 @@ def catch_all(path):
             "index": j["index"]
         } for j in i["body"]]
     } for i in body["data"]]
-    client.data.file_surgery_paths.insert_many([{j:i[j] for j in i.keys() if i[j] != None} for i in data])
+    client.data.file_stitched_paths.insert_many([{j:i[j] for j in i.keys() if i[j] != None} for i in data])
     return Response("OK")
