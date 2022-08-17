@@ -15,7 +15,7 @@ class handler(BaseHTTPRequestHandler):
             "dest": i["dest"],
             "header": i["header"],
             "body": [{
-                "key": client.data.file_stitched_paths.find_one({"_id": j["key"]})["new"],
+                "key": client.data.file_surgery_paths.find_one({"_id": j["key"]})["new"],
                 "index": j["index"]
                 } for j in i["body"]]
             } for i in client.data.file_stitched_paths.find()])
