@@ -8,15 +8,17 @@ app = Flask(__name__)
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
+    from flask import request
+    body = request.json
     args = {}
-    #if "_id" in self.headers.keys():
-    #    args["_id"] = self.headers["_id"]
-    #if "name" in self.headers.keys():
-    #    args["name"] = self.headers["name"]
-    #if "current" in self.headers.keys():
-    #    args["current"] = self.headers["current"]
-    #if "new" in self.headers.keys():
-    #    args["new"] = self.headers["new"]
+    if "_id" in body.keys():
+        args["_id"] = body["_id"]
+    if "name" in body.keys():
+        args["name"] = body["name"]
+    if "current" in body.keys():
+        args["current"] = body["current"]
+    if "new" in body.keys():
+        args["new"] = body["new"]
     client = MongoClient(os.environ['MONGODB_URI'])
     data = [{
         "_id": str(i["_id"]),
