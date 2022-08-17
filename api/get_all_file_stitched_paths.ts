@@ -12,7 +12,7 @@ export default (request: VercelRequest, response: VercelResponse) => {
 				for (let i = 0; i < docs.length; i++) {
 					let body = docs[i]["body"]
 					for (let j = 0; j < body.length; j++) {
-						docs[i]["body"][j]["key"] = client.db("data").collection("file_surgery_paths").findOne({_id: `ObjectId('${body[j]["key"]}')`})["new"];
+						docs[i]["body"][j]["key"] = client.db("data").collection("file_surgery_paths").findOne({_id: body[j]["key"]})["new"];
 					}
 				}
 				response.status(200).json(docs);
