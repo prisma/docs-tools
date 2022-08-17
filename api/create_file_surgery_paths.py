@@ -5,8 +5,8 @@ import json
 from flask import Flask, Response
 app = Flask(__name__)
 
-@app.route('/', defaults={'path': ''}, methods=['PUTS'])
-@app.route('/<path:path>', methods=['PUTS'])
+@app.route('/', defaults={'path': ''}, methods=['PUT'])
+@app.route('/<path:path>', methods=['PUT'])
 def catch_all(path):
     from flask import request
     if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
@@ -18,4 +18,4 @@ def catch_all(path):
         "redirect": i["redirect"] if "redirect" in i.keys() else None
     } for i in body["data"]]
     MongoClient(os.environ['MONGODB_URI']).data.file_surgery_paths.insert_many([{j:i[j] for j in i.keys() if i[j] != None} for i in data])
-    return Response("OK", mimetype='text/plain', status=200)
+    return Response("OK")
