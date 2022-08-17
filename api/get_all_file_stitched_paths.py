@@ -10,7 +10,7 @@ class handler(BaseHTTPRequestHandler):
         self.send_header('Content-type','application/json')
         self.end_headers()
         self.wfile.write(json.dumps([{
-            "name": i["name"],
+            {"name": i["name"]} if "name" in i.keys() else None: None,
             "dest": i["dest"],
             "header": i["header"],
             "body": [{
