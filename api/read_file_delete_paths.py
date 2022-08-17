@@ -9,21 +9,21 @@ app = Flask(__name__)
 @app.route('/<path:path>')
 def catch_all(path):
     from flask import request
-    body = request.json
+    body = request.json or {}
     args = {}
     if "_id" in body.keys():
         args["_id"] = body["_id"]
     if "name" in body.keys():
         args["name"] = body["name"]
-    if "current" in body.keys():
-        args["current"] = body["current"]
+    if "path" in body.keys():
+        args["path"] = body["path"]
     if "redirect" in body.keys():
         args["redirect"] = body["redirect"]
     client = MongoClient(os.environ['MONGODB_URI'])
     data = [{
         "_id": str(i["_id"]),
         "name": i["name"] if "name" in i.keys() else None,
-        "current": i["current"],
+        "path": i["path"],
         "redirect": i["redirect"] if "redirect" in i.keys() else None
         } for i in client.data.file_delete_paths.find(args)]
 

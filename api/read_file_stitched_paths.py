@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route('/<path:path>')
 def catch_all(path):
     from flask import request
-    body = request.json
+    body = request.json or {}
     args = {}
     if "_id" in body.keys():
         args["_id"] = body["_id"]
