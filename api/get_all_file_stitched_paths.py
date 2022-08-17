@@ -18,9 +18,5 @@ class handler(BaseHTTPRequestHandler):
                 "index": j["index"]
                 } for j in i["body"]]
             } for i in client.data.file_stitched_paths.find()]
-        for i in data:
-            for x, y in i.items():
-                if y == None:
-                    del i[x]
-        self.wfile.write(json.dumps(data).encode())
+        self.wfile.write(json.dumps([{j:i[j] for j in i.keys() if i[j] != None} for i in data]).encode())
         return
