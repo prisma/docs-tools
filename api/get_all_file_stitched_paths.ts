@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import * as dotenv from 'dotenv';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 export default (request: VercelRequest, response: VercelResponse) => {
 	dotenv.config();
@@ -12,7 +12,7 @@ export default (request: VercelRequest, response: VercelResponse) => {
 				for (let i = 0; i < docs.length; i++) {
 					let body = docs[i]["body"]
 					for (let j = 0; j < body.length; j++) {
-						docs[i]["body"][j]["key"] = client.db("data").collection("file_surgery_paths").findOne({_id: body[j]["key"]})["new"];
+						docs[i]["body"][j]["key"] = client.db("data").collection("file_surgery_paths").findOne({_id: new ObjectId(body[j]["key"])})["new"];
 					}
 				}
 				response.status(200).json(docs);
