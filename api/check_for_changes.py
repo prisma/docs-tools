@@ -13,7 +13,7 @@ def catch_all(path):
     body = request.json
     client = MongoClient(os.environ['MONGODB_URI'])
     changes = client.data.changes.find()
-    if body.has_key("delete"):
+    if "delete" in body.keys():
         if body["delete"]:
             client.data.changes.delete_many({})
     return Response(json.dumps(changes), mimetype='application/json')
