@@ -16,4 +16,4 @@ def catch_all(path):
     if "delete" in body.keys():
         if body["delete"]:
             client.data.changes.delete_many({})
-    return Response(json.dumps(changes), mimetype='application/json')
+    return Response(changes, mimetype='application/json')
