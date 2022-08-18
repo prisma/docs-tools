@@ -14,15 +14,24 @@ def catch_all(path):
         if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
         body = request.json
         client = MongoClient(os.environ['MONGODB_URI'])
-        data = [{
-            "name": i["name"] if "name" in i.keys() else None,
-            "dest": i["dest"],
-            "header": i["header"],
-            "body": [{
-                "key": client.data.file_surgery_paths.find_one({"new": j["key"]})["_id"],
-                "index": j["index"]
-            } for j in i["body"]]
-        } for i in body["data"]]
+        response = []
+        def format(i):
+            try:
+                formated = {
+                    "name": i["name"] if "name" in i.keys() else None,
+                    "dest": i["dest"],
+                    "header": i["header"],
+                    "body": [{
+                        "key": client.data.file_surgery_paths.find_one({"new": j["key"]})["_id"],
+                        "index": j["index"]
+                    } for j in i["body"]]
+                }
+                response.append("OK")
+                return formated
+            except:
+                response.append("ERR")
+                return None
+        data = [j for j in [format(i) for i in body["data"]] if j != None] 
         client.data.file_stitched_paths.insert_many([{j:i[j] for j in i.keys() if i[j] != None} for i in data])
         return Response("OK")
     

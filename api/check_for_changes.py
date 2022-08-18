@@ -1,0 +1,19 @@
+from http.server import BaseHTTPRequestHandler
+import os
+from pymongo import MongoClient
+import json
+from flask import Flask, Response
+app = Flask(__name__)
+
+@app.route('/', defaults={'path': ''}, methods=['PUT', 'GET', 'DELETE'])
+@app.route('/<path:path>', methods=['PUT', 'GET', 'DELETE'])
+def catch_all(path):
+    from flask import request
+    if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
+    body = request.json
+    client = MongoClient(os.environ['MONGODB_URI'])
+    changes = client.data.changes.find()
+    if body.has_key("delete"):
+        if body["delete"]:
+            client.data.changes.delete_many({})
+    return Response(json.dumps(changes), mimetype='application/json')

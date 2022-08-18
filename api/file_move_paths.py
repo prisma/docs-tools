@@ -13,13 +13,22 @@ def catch_all(path):
     if request.method == 'PUT':
         if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
         body = request.json
-        data = [{
-            "name": i["name"] if "name" in i.keys() else None,
-            "new": i["new"],
-            "current": i["current"]
-        } for i in body["data"]]
+        response = []
+        def format(i):
+            try:
+                formated = {
+                    "name": i["name"] if "name" in i.keys() else None,
+                    "new": i["new"],
+                    "current": i["current"]
+                }
+                response.append("OK")
+                return formated
+            except:
+                response.append("ERR")
+                return None
+        data = [j for j in [format(i) for i in body["data"]] if j != None]
         MongoClient(os.environ['MONGODB_URI']).data.file_move_paths.insert_many([{j:i[j] for j in i.keys() if i[j] != None} for i in data])
-        return Response("OK")
+        return Response(response, mimetype='application/json', status=200)
     
     elif request.method == 'GET':
         if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
