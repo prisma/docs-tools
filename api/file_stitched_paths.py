@@ -10,10 +10,11 @@ app = Flask(__name__)
 def catch_all(path):
     from flask import request
     
+    client = MongoClient(os.environ['MONGODB_URI'])
+    
     if request.method == 'PUT':
         if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
         body = request.json
-        client = MongoClient(os.environ['MONGODB_URI'])
         response = []
         def format(i):
             try:
@@ -33,6 +34,7 @@ def catch_all(path):
                 return None
         data = [j for j in [format(i) for i in body["data"]] if j != None] 
         client.data.file_stitched_paths.insert_many([{j:i[j] for j in i.keys() if i[j] != None} for i in data])
+        client.data.changes.insert_one({})
         return Response(json.dumps(response), mimetype='application/json', status=200)
     
     elif request.method == 'GET':
@@ -45,7 +47,6 @@ def catch_all(path):
             args["name"] = body["name"]
         if "dest" in body.keys():
             args["dest"] = body["dest"]
-        client = MongoClient(os.environ['MONGODB_URI'])
         data = [{
             "_id": str(i["_id"]),
             "name": i["name"] if "name" in i.keys() else None,
@@ -56,6 +57,7 @@ def catch_all(path):
                 "index": j["index"]
                 } for j in i["body"]]
             } for i in client.data.file_stitched_paths.find(args)]
+        client.data.changes.insert_one({})
         return Response(json.dumps([{j:i[j] for j in i.keys() if i[j] != None} for i in data]), mimetype='application/json')
     
     elif request.method == 'DELETE':
@@ -72,7 +74,6 @@ def catch_all(path):
             args["header"] = body["header"]
         if "body" in body.keys():
             args["body"] = body["body"]
-        client = MongoClient(os.environ['MONGODB_URI'])
         data = client.data.file_stitched_paths.delete_many(args)
-        
+        client.data.changes.insert_one({})
         return Response(json.dumps({"deleted": data.deleted_count}), mimetype='application/json')
