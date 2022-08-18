@@ -12,7 +12,7 @@ def catch_all(path):
     if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
     body = request.json
     client = MongoClient(os.environ['MONGODB_URI'])
-    changes = client.data.changes.find()
+    changes = [i for i in client.data.changes.find()]
     if "delete" in body.keys():
         if body["delete"]:
             client.data.changes.delete_many({})
