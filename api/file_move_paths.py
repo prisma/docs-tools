@@ -28,7 +28,7 @@ def catch_all(path):
                 return None
         data = [j for j in [format(i) for i in body["data"]] if j != None]
         MongoClient(os.environ['MONGODB_URI']).data.file_move_paths.insert_many([{j:i[j] for j in i.keys() if i[j] != None} for i in data])
-        return Response(response, mimetype='application/json', status=200)
+        return Response({"checks":response}, mimetype='application/json', status=200)
     
     elif request.method == 'GET':
         if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
