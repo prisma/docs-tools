@@ -18,7 +18,9 @@ file_delete_paths: Dict[str, str | None] = get_file_delete_paths()
 
 
 # clear new directory
+print("\nClearing new directory...")
 shutil.rmtree(new_content_dir)
+print("Done clearing new directory.\n")
 
 # move files around
 print("copying started...\n")
@@ -57,6 +59,9 @@ print("\nfinished copying")
 
 # stitch together sugery files
 print("stitching started...\n")
+
+## make sure surgery directory exists
+os.makedirs(surgery_dir, exist_ok=True) 
 
 ## cut up old files
 surgery_files: Dict[str, list[str]] = {}
