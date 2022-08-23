@@ -5,8 +5,8 @@ import json
 from flask import Flask, Response
 app = Flask(__name__)
 
-@app.route('/', defaults={'path': ''}, methods=['PUT', 'GET', 'DELETE'])
-@app.route('/<path:path>', methods=['PUT', 'GET', 'DELETE'])
+@app.route('/', defaults={'path': ''}, methods=['PUT', 'POST', 'GET', 'DELETE'])
+@app.route('/<path:path>', methods=['PUT', 'POST', 'GET', 'DELETE'])
 def catch_all(path):
     from flask import request
     
@@ -54,6 +54,13 @@ def catch_all(path):
         client.data.changes.insert_one({})
         return Response(json.dumps([{j:i[j] for j in i.keys() if i[j] != None} for i in data]), mimetype='application/json')
     
+    elif request.method == 'POST':
+        if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
+        body = request.json
+
+        data = [(i["query"], i["update"]) for i in body]
+        return Response(json.dumps(data), mimetype='application/json')
+
     elif request.method == 'DELETE':
         if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
         body = request.json
