@@ -3,12 +3,20 @@ import os
 from pymongo import MongoClient
 import json
 from flask import Flask, Response
+from _validate import *
 app = Flask(__name__)
 
 @app.route('/', defaults={'path': ''}, methods=['PUT', 'POST', 'GET', 'DELETE'])
 @app.route('/<path:path>', methods=['PUT', 'POST', 'GET', 'DELETE'])
 def catch_all(path):
     from flask import request
+
+    move_type = {
+        "_id": [str, None],
+        "name": [str, None],
+        "current_path": [str],
+        "new_path": [str],
+    }
     
     client = MongoClient(os.environ['MONGODB_URI'])
     
@@ -36,23 +44,10 @@ def catch_all(path):
     elif request.method == 'GET':
         if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
         body = request.json
-        args = {}
-        if "_id" in body.keys():
-            args["_id"] = body["_id"]
-        if "name" in body.keys():
-            args["name"] = body["name"]
-        if "current" in body.keys():
-            args["current"] = body["current"]
-        if "new" in body.keys():
-            args["new"] = body["new"]
-        data = [{
-            "_id": str(i["_id"]),
-            "name": i["name"] if "name" in i.keys() else None,
-            "current": i["current"],
-            "new": i["new"]
-            } for i in client.data.file_move_paths.find(args)]
-        client.data.changes.insert_one({})
-        return Response(json.dumps([{j:i[j] for j in i.keys() if i[j] != None} for i in data]), mimetype='application/json')
+        try:
+            return Response(json.dumps(validate_query(body, move_type)), mimetype='application/json')
+        except Exception() as e:
+            return Response(json.dumps({"Error": str(e)}), mimetype='application/json')
 
     elif request.method == 'POST':
         if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)

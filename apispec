@@ -1,0 +1,62 @@
+move {
+    name?
+    current_path
+    new_path
+}
+surgery {
+    name?
+    current_path
+    new_path
+    redirect?
+}
+delete {
+    name?
+    current_path
+    redirect?
+}
+stitch {
+    name?
+    new_path
+    header {}
+    parts [{
+        key
+        index
+    }]
+}
+
+type = enum {
+    move
+    surgery
+    delete
+    stitch
+}
+query = type(all fields option)
+result = enum {
+    OK
+    ERR
+}
+update = mongodb update
+
+get:
+    in:
+        query: query
+    out:
+        items: [type]
+put:
+    in:
+        inputs: [type]
+    out:
+        results: [result]
+post:
+    in:
+        [{
+            query: query
+            update: update
+        }]
+    out:
+        changed_items: [type]
+delete:
+    in:
+        query: query
+    out:
+        amount: int
