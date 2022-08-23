@@ -3,7 +3,7 @@ import os
 from pymongo import MongoClient
 import json
 from flask import Flask, Response
-from _validate import *
+from util import validate
 app = Flask(__name__)
 
 @app.route('/', defaults={'path': ''}, methods=['PUT', 'POST', 'GET', 'DELETE'])
@@ -45,7 +45,7 @@ def catch_all(path):
         if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
         body = request.json
         try:
-            return Response(json.dumps(validate_query(body, move_type)), mimetype='application/json')
+            return Response(json.dumps(validate.validate_query(body, move_type)), mimetype='application/json')
         except Exception() as e:
             return Response(json.dumps({"Error": str(e)}), mimetype='application/json')
 
