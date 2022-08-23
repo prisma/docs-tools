@@ -11,7 +11,7 @@ def validate_query(data: Dict, query_type: Dict[str, List[type]]) -> Dict:
     result = {}
     for key, item in data.items():
         if key in query_type.keys():
-            if type(item) == query_type[key]:
+            if type(item) in query_type[key]:
                 result[key] = item
             else:
                 raise Exception("Wrong shape for query")
