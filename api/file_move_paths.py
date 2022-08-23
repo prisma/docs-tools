@@ -59,7 +59,7 @@ def catch_all(path):
         body = request.json
 
         data = [(i["query"], i["update"]) for i in body]
-        return response(json.dumps(data), mimetype='application/json')
+        return Response(json.dumps(data), mimetype='application/json')
 
     
     elif request.method == 'DELETE':

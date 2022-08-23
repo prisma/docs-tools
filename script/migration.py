@@ -115,15 +115,16 @@ for path, redirect in redirects.items(): ### remove numbers in path
                 ttmp.append(dir)
         tmp.append("/".join(ttmp))
     tmp = ["/" + i[:-4] if i[-4:] == ".mdx" else "/" + i for i in tmp] ### remove '.mdx' from path and add '/' add the beginning
+    if tmp[-6:] == "/index": tmp = tmp[:-6] ### remove /index
     
     if len(tmp) > 1: ### if there is a redirect
         if tmp[0] != tmp[1]:
             tmp_redirects[tmp[0]] = tmp[1]
     else: ### if there is no redirect
         tmp_redirects[tmp[0]] = None
-   
+    
 #### <---- TODO: write redirects and 410s (need to figure out where to put them) ----> ####
- 
+
 ## write redirects to vercel.json
 #f = open(new_vercel, encoding="utf8")
 #vercel = json.loads(f.read())
