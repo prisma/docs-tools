@@ -43,7 +43,7 @@ def catch_all(path):
     
     elif request.method == 'GET':
         try:
-            return Response(json.dumps([{key:str(value) if key is "_id" else value for key, value in item.items()} for item in list(client.data.file_move_paths.find(validate_query(body, delete_type)))]), mimetype='application/json')
+            return Response(json.dumps([{key:str(value) if key is "_id" else value for key, value in item.items()} for item in list(client.data.file_delete_paths.find(validate_query(body, delete_type)))]), mimetype='application/json')
         except:
             return Response(json.dumps({"Error": "bad shape"}), mimetype='application/json')
     
