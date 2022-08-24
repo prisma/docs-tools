@@ -45,7 +45,7 @@ def catch_all(path):
         if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
         body = request.json
         #try:
-        return Response(json.dumps(client.data.file_move_paths.find(validate_query(body, move_type))), mimetype='application/json')
+        return Response(json.dumps([i for i in client.data.file_move_paths.find(validate_query(body, move_type))]), mimetype='application/json')
         #except:
             #return Response(json.dumps({"Error": "bad shape"}), mimetype='application/json')
 
