@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler
 import os
 from pymongo import MongoClient
 import json
+from typing import Dict, List
 from flask import Flask, Response
 from api._util.validate import *
 app = Flask(__name__)
@@ -48,7 +49,7 @@ def catch_all(path):
         data: List = [i for i in client.data.file_move_paths.find(
                 validate_query(body, move_type)
             )]
-        return Response(json.dumps(data), mimetype='application/json')
+        return Response(json.dumps({"data": data}), mimetype='application/json')
         #except:
             #return Response(json.dumps({"Error": "bad shape"}), mimetype='application/json')
 
