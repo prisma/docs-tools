@@ -9,6 +9,14 @@ app = Flask(__name__)
 @app.route('/<path:path>', methods=['PUT', 'GET', 'DELETE'])
 def catch_all(path):
     from flask import request
+
+    surgery_type = {
+        "_id": [str, None],
+        "name": [str, None],
+        "current_path": [str],
+        "new_path": [str],
+        "redirect": [str, None],
+    }
     
     client = MongoClient(os.environ['MONGODB_URI'])
     
@@ -37,7 +45,7 @@ def catch_all(path):
     
     elif request.method == 'GET':
         try:
-            return Response(json.dumps([{key:str(value) if type(value) is ObjectId else value for key, value in item.items()} for item in list(client.data.file_move_paths.find(validate_query(body, move_type)))]), mimetype='application/json')
+            return Response(json.dumps([{key:str(value) if type(value) is ObjectId else value for key, value in item.items()} for item in list(client.data.file_surgery_paths.find(validate_query(body, surgery_type)))]), mimetype='application/json')
         except:
             return Response(json.dumps({"Error": "bad shape"}), mimetype='application/json')
     
