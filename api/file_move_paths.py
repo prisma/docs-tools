@@ -47,7 +47,7 @@ def catch_all(path):
         body = request.json
         #try:
         
-        return Response([i for i in client.data.file_move_paths.find(validate_query(body, move_type))], mimetype='application/json')
+        return Response(json.dumps([i for i in client.data.file_move_paths.find(validate_query(body, move_type))]), mimetype='application/json')
         #except:
             #return Response(json.dumps({"Error": "bad shape"}), mimetype='application/json')
 
