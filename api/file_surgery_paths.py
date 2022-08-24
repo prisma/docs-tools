@@ -44,10 +44,10 @@ def catch_all(path):
         return Response(json.dumps(response), mimetype='application/json', status=200)
     
     elif request.method == 'GET':
-        try:
+        #try:
             return Response(json.dumps([{key:str(value) if type(value) is ObjectId else value for key, value in item.items()} for item in list(client.data.file_surgery_paths.find(validate_query(body, surgery_type)))]), mimetype='application/json')
-        except:
-            return Response(json.dumps({"Error": "bad shape"}), mimetype='application/json')
+        #except:
+            #return Response(json.dumps({"Error": "bad shape"}), mimetype='application/json')
     
     elif request.method == 'DELETE':
         args = {}
