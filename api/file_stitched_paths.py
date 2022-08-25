@@ -43,14 +43,14 @@ def catch_all(path):
                     [
                         {
                             key:str(value) 
-                            if type(value) is ObjectId else 
+                            if type(value) == ObjectId else 
                             [
                                 {
                                     "index": bodypart["index"], 
-                                    "key": client.data.file_surgery_paths.find_one({"key": bodypart["key"]})["new"]
+                                    "key": client.data.file_surgery_paths.find_one({"key": bodypart["key"]})["new_path"]
                                 } for bodypart in value
                             ] 
-                            if key is body else 
+                            if key == body else 
                             value 
                             for key, value in item.items()
                         } for item in list(
