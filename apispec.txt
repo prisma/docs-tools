@@ -54,7 +54,10 @@ post:
             update: update
         }]
     out:
-        changed_items: [type]
+        changed_items: [{
+            matched_count: int
+            modified_count: int
+        }]
 delete:
     in:
         query: query
