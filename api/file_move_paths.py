@@ -26,20 +26,12 @@ def catch_all(path):
     
     if request.method == 'PUT':
         response = []
-        def format(i):
+        for i in body:
             try:
-                formated = {
-                    "name": i["name"] if "name" in i.keys() else None,
-                    "new": i["new"],
-                    "current": i["current"]
-                }
+                client.data.file_move_paths.insert_one(validate_type(i, move_type))
                 response.append("OK")
-                return formated
             except:
                 response.append("ERR")
-                return None
-        data = [j for j in [format(i) for i in body["data"]] if j != None]
-        client.data.file_move_paths.insert_many([{j:i[j] for j in i.keys() if i[j] != None} for i in data])
         client.data.changes.insert_one({})
         return Response(json.dumps(response), mimetype='application/json', status=200)
     
