@@ -21,7 +21,6 @@ def catch_all(path):
     }
     
     client = MongoClient(os.environ['MONGODB_URI'])
-    
     if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
     body = request.json
     
@@ -48,7 +47,7 @@ def catch_all(path):
         for query, update in data:
             res = client.data.file_surgery_paths.update_many(query, update)
             response.append({"matched_count": res.matched_count, "modified_count": res.modified_count})
-        return Response(json.dumps(data), mimetype='application/json')
+        return Response(json.dumps(response), mimetype='application/json')
     
     elif request.method == 'DELETE':
         data = client.data.file_surgery_paths.delete_many(validate_query(body, surgery_type))
