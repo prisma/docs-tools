@@ -47,7 +47,7 @@ def catch_all(path):
                             [
                                 {
                                     "index": bodypart["index"], 
-                                    "key": client.data.file_surgery_paths.find_one({"key": bodypart["key"]})["new_path"]
+                                    "key": client.data.file_surgery_paths.find_one({"_id": bodypart["key"]})["new_path"]
                                 } for bodypart in value
                             ] 
                             if key == "body" else 
