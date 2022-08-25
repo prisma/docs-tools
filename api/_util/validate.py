@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 
-def get_from_dict(item, dict: Dict):
+def get_from_dict(item: str, dict: Dict):
     if item in dict:
         return dict[item]
     else:
@@ -20,7 +20,7 @@ def validate_query(data: Dict, query_type: Dict[str, List[type]]) -> Dict:
 def validate_type(data: Dict, query_type: Dict[str, List[type]]) -> Dict:
     result = {}
     for key, item in query_type.items():
-        if type(get_from_dict(data[key], data)) in item:
+        if type(get_from_dict(key, data)) in item:
             result[key] = data[key]
         else:
             raise Exception("Wrong shape for type")
