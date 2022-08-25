@@ -2,7 +2,7 @@ from typing import Dict, List
 
 
 def get_from_dict(item: str, dict: Dict):
-    if item in dict.keys():
+    if item in dict:
         return dict[item]
     else:
         return
