@@ -24,27 +24,15 @@ def catch_all(path):
     
     if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
     body = request.json
-    
+    client.data.file_surgery_paths.find_one({"new_path": j["key"]})["_id"]
     if request.method == 'PUT':
         response = []
-        def format(i):
+        for i in body:
             try:
-                formated = {
-                    "name": i["name"] if "name" in i.keys() else None,
-                    "dest": i["dest"],
-                    "header": i["header"],
-                    "body": [{
-                        "key": client.data.file_surgery_paths.find_one({"new_path": j["key"]})["_id"],
-                        "index": j["index"]
-                    } for j in i["body"]]
-                }
+                client.data.file_stitched_paths.insert_one({key:[{key:client.data.file_surgery_paths.find_one({"new_path": value})["_id"] if key is "key" else value for key, value in item.items()} for item in value] if key is "body" else value for key, value in validate_type(i, stitched_type).items()})
                 response.append("OK")
-                return formated
             except:
                 response.append("ERR")
-                return None
-        data = [j for j in [format(i) for i in body["data"]] if j != None] 
-        client.data.file_stitched_paths.insert_many([{j:i[j] for j in i.keys() if i[j] != None} for i in data])
         client.data.changes.insert_one({})
         return Response(json.dumps(response), mimetype='application/json', status=200)
     
