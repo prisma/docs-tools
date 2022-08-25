@@ -24,7 +24,7 @@ def catch_all(path):
     
     if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
     body = request.json
-    client.data.file_surgery_paths.find_one({"new_path": j["key"]})["_id"]
+    
     if request.method == 'PUT':
         response = []
         for i in body:
