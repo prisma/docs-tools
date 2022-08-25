@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler
 import os
+from types import NoneType
 from pymongo import MongoClient
 from bson import ObjectId
 import json
@@ -13,8 +14,8 @@ def catch_all(path):
     from flask import request
 
     stitched_type = {
-        "_id": [str, None],
-        "name": [str, None],
+        "_id": [str, NoneType],
+        "name": [str, NoneType],
         "new_path": [str],
         "header": [dict],
         "body": [list],

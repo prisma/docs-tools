@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler
 import os
+from types import NoneType
 from pymongo import MongoClient
 from bson import ObjectId
 import json
@@ -13,10 +14,10 @@ def catch_all(path):
     from flask import request
 
     delete_type = {
-        "_id": [str, None],
-        "name": [str, None],
+        "_id": [str, NoneType],
+        "name": [str, NoneType],
         "current_path": [str],
-        "redirect": [str, None],
+        "redirect": [str, NoneType],
     }
     
     client = MongoClient(os.environ['MONGODB_URI'])
