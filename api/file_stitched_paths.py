@@ -50,16 +50,16 @@ def catch_all(path):
                                     "key": client.data.file_surgery_paths.find_one({"key": bodypart["key"]})["new_path"]
                                 } for bodypart in value
                             ] 
-                            if key == body else 
+                            if key == "body" else 
                             value 
                             for key, value in item.items()
                         } for item in list(
                             client.data.file_stitched_paths.find(
                                 validate_query(body, stitched_type)
-                                )
                             )
-                        ]
-                    ), mimetype='application/json')
+                        )
+                    ]
+                ), mimetype='application/json')
         #except:
             #return Response(json.dumps({"Error": "bad shape"}), mimetype='application/json')
     
