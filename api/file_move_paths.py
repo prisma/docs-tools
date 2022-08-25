@@ -42,7 +42,7 @@ def catch_all(path):
             return Response(json.dumps({"Error": "bad shape"}), mimetype='application/json')
 
     elif request.method == 'POST':
-        data = [(validate_query(i["query"]), i["update"]) for i in body]
+        data = [(validate_query(i["query"], move_type), i["update"]) for i in body]
         response = []
         for query, update in data:
             res = client.data.file_move_paths.update_many(query, update)
