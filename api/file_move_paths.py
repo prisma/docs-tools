@@ -46,15 +46,6 @@ def catch_all(path):
         return Response(json.dumps(data), mimetype='application/json')
 
     elif request.method == 'DELETE':
-        args = {}
-        if "_id" in body.keys():
-            args["_id"] = body["_id"]
-        if "name" in body.keys():
-            args["name"] = body["name"]
-        if "current" in body.keys():
-            args["current"] = body["current"]
-        if "new" in body.keys():
-            args["new"] = body["new"]
-        data = client.data.file_move_paths.delete_many(args)
+        data = client.data.file_move_paths.delete_many(validate_query(body, move_type))
         client.data.changes.insert_one({})
         return Response(json.dumps({"deleted": data.deleted_count}), mimetype='application/json')
