@@ -7,8 +7,8 @@ from flask import Flask, Response
 from api._util.validate import *
 app = Flask(__name__)
 
-@app.route('/', defaults={'path': ''}, methods=['PUT', 'GET', 'DELETE'])
-@app.route('/<path:path>', methods=['PUT', 'GET', 'DELETE'])
+@app.route('/', defaults={'path': ''}, methods=['PUT', 'POST', 'GET', 'DELETE'])
+@app.route('/<path:path>', methods=['PUT', 'POST', 'GET', 'DELETE'])
 def catch_all(path):
     from flask import request
 
@@ -41,6 +41,14 @@ def catch_all(path):
             return Response(json.dumps([{key:str(value) if type(value) is ObjectId else value for key, value in item.items()} for item in list(client.data.file_surgery_paths.find(validate_query(body, surgery_type)))]), mimetype='application/json')
         except:
             return Response(json.dumps({"Error": "bad shape"}), mimetype='application/json')
+    
+    elif request.method == 'POST':
+        data = [(validate_query(i["query"], surgery_type), i["update"]) for i in body]
+        response = []
+        for query, update in data:
+            res = client.data.file_surgery_paths.update_many(query, update)
+            response.append({"matched_count": res.matched_count, "modified_count": res.modified_count})
+        return Response(json.dumps(data), mimetype='application/json')
     
     elif request.method == 'DELETE':
         data = client.data.file_surgery_paths.delete_many(validate_query(body, surgery_type))

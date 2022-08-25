@@ -41,7 +41,11 @@ def catch_all(path):
             return Response(json.dumps({"Error": "bad shape"}), mimetype='application/json')
     
     elif request.method == 'POST':
-        data = [(i["query"], i["update"]) for i in body]
+        data = [(validate_query(i["query"], delete_type), i["update"]) for i in body]
+        response = []
+        for query, update in data:
+            res = client.data.file_delete_paths.update_many(query, update)
+            response.append({"matched_count": res.matched_count, "modified_count": res.modified_count})
         return Response(json.dumps(data), mimetype='application/json')
 
     elif request.method == 'DELETE':
