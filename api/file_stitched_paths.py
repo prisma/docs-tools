@@ -26,8 +26,6 @@ def catch_all(path):
     body = request.json
     
     if request.method == 'PUT':
-        if request.headers.get('Content-Type') != 'application/json': return Response("Content-Type must be application/json", mimetype='text/plain', status=400)
-        body = request.json
         response = []
         def format(i):
             try:
@@ -36,7 +34,7 @@ def catch_all(path):
                     "dest": i["dest"],
                     "header": i["header"],
                     "body": [{
-                        "key": client.data.file_surgery_paths.find_one({"new": j["key"]})["_id"],
+                        "key": client.data.file_surgery_paths.find_one({"new_path": j["key"]})["_id"],
                         "index": j["index"]
                     } for j in i["body"]]
                 }
@@ -52,7 +50,28 @@ def catch_all(path):
     
     elif request.method == 'GET':
         #try:
-            return Response(json.dumps([{key:str(value) if type(value) is ObjectId else [{"index": bodypart["index"], "key": client.data.file_surgery_paths.find_one(bodypart["key"])["new"]} for bodypart in value] if key is body else value for key, value in item.items()} for item in list(client.data.file_stitched_paths.find(validate_query(body, stitched_type)))]), mimetype='application/json')
+            return Response(
+                json.dumps(
+                    [
+                        {
+                            key:str(value) 
+                            if type(value) is ObjectId else 
+                            [
+                                {
+                                    "index": bodypart["index"], 
+                                    "key": client.data.file_surgery_paths.find_one({"key": bodypart["key"]})["new"]
+                                } for bodypart in value
+                            ] 
+                            if key is body else 
+                            value 
+                            for key, value in item.items()
+                        } for item in list(
+                            client.data.file_stitched_paths.find(
+                                validate_query(body, stitched_type)
+                                )
+                            )
+                        ]
+                    ), mimetype='application/json')
         #except:
             #return Response(json.dumps({"Error": "bad shape"}), mimetype='application/json')
     
