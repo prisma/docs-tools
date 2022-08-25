@@ -1,6 +1,5 @@
 from http.server import BaseHTTPRequestHandler
 import os
-from types import NoneType
 from pymongo import MongoClient
 from bson import ObjectId
 import json

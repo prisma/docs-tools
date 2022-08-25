@@ -1,5 +1,6 @@
 from typing import Dict, List
 
+NoneType = type(None)
 
 def get_from_dict(item: str, dict: Dict):
     if item in dict:
