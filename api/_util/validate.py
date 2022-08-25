@@ -22,7 +22,7 @@ def validate_type(data: Dict, query_type: Dict[str, List[type]]) -> Dict:
     result = {}
     for key, item in query_type.items():
         if type(get_from_dict(key, data)) in item:
-            result[key] = data[key]
+            result[key] = get_from_dict(key, data)
         else:
             raise Exception("Wrong shape for type")
     return result
