@@ -29,7 +29,7 @@ def catch_all(path):
         response = []
         for i in body:
             try:
-                client.data.file_stitched_paths.insert_one({key:[{key:client.data.file_surgery_paths.find_one({"new_path": value})["_id"] if key is "key" else value for key, value in item.items()} for item in value] if key is "body" else value for key, value in validate_type(i, stitched_type).items()})
+                client.data.file_stitched_paths.insert_one({key:[{key:client.data.file_surgery_paths.find_one({"new_path": value})["_id"] if key == "key" else value for key, value in item.items()} for item in value] if key == "body" else value for key, value in validate_type(i, stitched_type).items()})
                 response.append("OK")
             except:
                 response.append("ERR")
