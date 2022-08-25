@@ -27,11 +27,11 @@ def catch_all(path):
     if request.method == 'PUT':
         response = []
         for i in body:
-            try:
+            #try:
                 client.data.file_move_paths.insert_one(validate_type(i, move_type))
                 response.append("OK")
-            except:
-                response.append("ERR")
+            #except:
+                #response.append("ERR")
         client.data.changes.insert_one({})
         return Response(json.dumps(response), mimetype='application/json', status=200)
     
