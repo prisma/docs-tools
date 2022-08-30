@@ -1,6 +1,8 @@
 import os
+import re
 import shutil
 from typing import Dict, List, Tuple
+
 
 from api import (
     get_file_move_paths,
@@ -73,7 +75,9 @@ for root, dirs, files in os.walk(surgery_dir): ### walk through surgery director
         surgery_files[path] = "".join(f.read().split("---")[2:]).split(separation_string)
         f.close()
 
-file_stitched: List[stitched] = get_stitched_files(surgery_files)
+file_stitched_paths = get_stitched_files(surgery_files)
+
+file_stitched: List[stitched] = [stitched(i["new_path"], i["header"], i["body"]) for i in file_stitched_paths]
 
 for i in file_stitched: i.construct(True)
 
@@ -83,52 +87,56 @@ print("\nfinished stitching")
 # edit redirects
 os.makedirs(os.path.dirname(new_vercel), exist_ok=True)
 shutil.copy(old_vercel, new_vercel)
+os.makedirs(os.path.dirname(new_gatsby_node), exist_ok=True)
+shutil.copy(old_gatsby_node, new_gatsby_node)
 
 ## add redirects from moves
-redirects: Dict[str, str | None] = {}
+redirects: Dict[str, str] = {}
+deletes: List[str] = []
 
-## add redirects from delete
-for path, redirect in file_move_paths.items():
-    redirects[path] = redirect
+for old, new in file_move_paths.items():
+    if old != new:
+        redirects[old] = new
 
-## add redirects from surgery
-for path, (_, redirect) in file_surgery_paths.items():
-    redirects[path] = redirect
-
-## add redirects from delete
-for path, redirect in file_delete_paths.items():
-    redirects[path] = redirect
-
-## format redirects
-tmp_redirects: dict[str, str | None] = {}
-for path, redirect in redirects.items(): ### remove numbers in path
-    tmp = []
-    for path in [path, redirect] if redirect is not None else [path]:
-        path = (" " + path).split("/")[1:] ### remove first '/' so '/docs' can be added without '/docs//...' issue
-        ttmp = ["docs"]
-        for dir in path:
-            i = dir.split("-") ### split by '-' to find numbers
-            try:
-                int(i[0])
-                ttmp.append("-".join(i[1:]))
-            except:
-                ttmp.append(dir)
-        tmp.append("/".join(ttmp))
-    tmp = ["/" + i[:-4] if i[-4:] == ".mdx" else "/" + i for i in tmp] ### remove '.mdx' from path and add '/' add the beginning
-    if tmp[-6:] == "/index": tmp = tmp[:-6] ### remove /index
+for old, (new, redirect) in file_surgery_paths.items():
+    if redirect == None:
+        deletes.append(old)
+    else:
+        redirects[old] = redirect
+        
+for old, redirect in file_delete_paths.items():
+    if redirect == None:
+        deletes.append(old)
+    else:
+        redirects[old] = redirect
     
-    if len(tmp) > 1: ### if there is a redirect
-        if tmp[0] != tmp[1]:
-            tmp_redirects[tmp[0]] = tmp[1]
-    else: ### if there is no redirect
-        tmp_redirects[tmp[0]] = None
+def format_redirect(redirect: str) -> str:
+    tmp = [i.split("-") for i in redirect.split("/")]
+    tmp = [i for i in tmp if len(i) > 1]
     
+    for i in range(len(tmp)):
+        for j in range(len(tmp[i])):
+            if tmp[i][j] == "":
+                del tmp[i][j]
+    for i in range(len(tmp)):
+        if bool(re.search("^\d+$", tmp[i][0])):
+            del tmp[i][0]
+        if bool(re.search(".mdx$", tmp[i][-1])):
+            tmp[i][-1] = tmp[i][-1][:-4]
+        if bool(re.search("^index$", tmp[i][-1])):
+            del tmp[i][-1]
+    return "/" + "/".join(["-".join(i) for i in tmp])
+
+redirects = {format_redirect(i):format_redirect(j) for i, j in redirects.items()}
+deletes = [format_redirect(i) for i in deletes if i not in redirects.keys()]
+
+redirects = {i:j for i, j in redirects.items() if i not in [format_redirect(i) for i in file_move_paths.values()] and i not in [i["new_path"] for i in file_stitched_paths]}
+deletes = [i for i in deletes if i not in [format_redirect(i) for i in file_move_paths.values()] and i not in [i["new_path"] for i in file_stitched_paths]]
+print(redirects)
+
 #### <---- TODO: write redirects and 410s (need to figure out where to put them) ----> ####
 
-## write redirects to vercel.json
-#f = open(new_vercel, encoding="utf8")
-#vercel = json.loads(f.read())
-#f.close()
+
 
 
 # clean up
