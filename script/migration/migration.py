@@ -3,7 +3,6 @@ import re
 import shutil
 from typing import Dict, List, Tuple
 
-
 from api import (
     get_file_move_paths,
     get_file_surgery_paths,
@@ -132,12 +131,24 @@ deletes = [format_redirect(i) for i in deletes if i not in redirects.keys()]
 
 redirects = {i:j for i, j in redirects.items() if i not in [format_redirect(i) for i in file_move_paths.values()] and i not in [i["new_path"] for i in file_stitched_paths]}
 deletes = [i for i in deletes if i not in [format_redirect(i) for i in file_move_paths.values()] and i not in [i["new_path"] for i in file_stitched_paths]]
-print(redirects)
 
-#### <---- TODO: write redirects and 410s (need to figure out where to put them) ----> ####
+## add deletes to gatsby-node.js
+delete_string = ""
+for i in deletes:
+    delete_string += f"createRedirect(\{{fromPath: `{i}`,toPath: `/410`,statusCode: 410}})\n"
+with open(new_gatsby_node, 'a') as f:
+    f.write(delete_string)
 
+## add redirects to vercel.json
+redirect_file = {}
+with open(new_vercel, 'r') as f:
+    redirect_file = json.loads(f.read())
 
+for i, j in redirects.items():
+    redirect_file["redirects"].append({"source": i, "desination": j})
 
+with open(new_vercel, 'w') as f:
+    f.write(json.dumps(redirect_file, indent=4))
 
 # clean up
 print("\ncleaning up")
