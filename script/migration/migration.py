@@ -131,9 +131,7 @@ deletes = [format_redirect(i) for i in deletes if i not in redirects.keys()]
 
 redirects = {i:j for i, j in redirects.items() if i not in [format_redirect(i) for i in file_move_paths.values()] and i not in [i["new_path"] for i in file_stitched_paths]}
 deletes = [i for i in deletes if i not in [format_redirect(i) for i in file_move_paths.values()] and i not in [i["new_path"] for i in file_stitched_paths]]
-print(redirects)
 
-#### <---- TODO: write redirects and 410s ----> ####
 ## add deletes to gatsby-node.js
 delete_string = ""
 for i in deletes:
