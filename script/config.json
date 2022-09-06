@@ -1,8 +1,0 @@
-{
-    "old_content_dir": "./old/content",
-    "new_content_dir": "./new/content",
-    "surgery_dir": "./surgery",
-    "old_vercel": "./vercel.json/old.json",
-    "new_vercel": "./vercel.json/new.json",
-    "separation_string": "[//]: # (SEPARATION_LINE)"
-}

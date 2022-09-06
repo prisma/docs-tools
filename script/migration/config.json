@@ -1,0 +1,6 @@
+{
+    "old_dir": "./old",
+    "new_dir": "./new",
+    "surgery_dir": "./surgery",
+    "separation_string": "[//]: # (SEPARATION_LINE)"
+}
