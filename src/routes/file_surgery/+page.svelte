@@ -56,21 +56,14 @@
 
 <div style="margin-left: 10px;">
     <h1 style="color: #eceff4;">File Move Paths</h1>
-    <form on:submit|preventDefault={onAdd}>
-        <label>Name*</label>
-        <input type="text" class="inner-each top selected" bind:value={fileSurgeryPath.name}>
-        <label>Current Path</label>
-        <input type="text" class="inner-each middle selected" bind:value={fileSurgeryPath.current}>
-        <label>New Path</label>
-        <input type="text" class="inner-each middle selected" bind:value={fileSurgeryPath.new}>
-        <label>Redirect*</label>
-        <input type="text" class="inner-each middle selected" bind:value={fileSurgeryPath.redirect}>
-        <div style="display: flex; flex-direction: row; margin-left: 100px; width: 200px">
-            <button type="button" class="button left selected" on:click={onAdd}>Add</button>
-            <button type="button" class="button right selected" on:click={onSubmit}>Submit</button>
-        </div>
-    </form>
-
+    <input type="text" class="inner-each top selected" placeholder="Name*" bind:value={fileSurgeryPath.name}>
+    <input type="text" class="inner-each middle selected" placeholder="Current Path" bind:value={fileSurgeryPath.current}>
+    <input type="text" class="inner-each middle selected" placeholder="New Path" bind:value={fileSurgeryPath.new}>
+    <input type="text" class="inner-each middle selected" placeholder="Redirect*" bind:value={fileSurgeryPath.redirect}>
+    <div style="display: flex; flex-direction: row; width: 200px">
+        <button type="button" class="button left selected" on:click={onAdd}>Add</button>
+        <button type="button" class="button right selected" on:click={onSubmit}>Submit</button>
+    </div>
 </div>
 
 <div style="margin-left: 10px;">
