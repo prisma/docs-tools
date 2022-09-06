@@ -51,11 +51,11 @@
 <div style="margin-left: 10px;">
     <h1 style="color: #eceff4;">File Move Paths</h1>
     <form on:submit|preventDefault={onAdd}>
-        <label>name*</label>
+        <label>Name*</label>
         <input type="text" class="inner-each top selected" bind:value={fileMovePath.name}>
-        <label>current</label>
+        <label>Current Path</label>
         <input type="text" class="inner-each middle selected" bind:value={fileMovePath.current}>
-        <label>new</label>
+        <label>New Path</label>
         <input type="text" class="inner-each middle selected" bind:value={fileMovePath.new}>
         <div style="display: flex; flex-direction: row; margin-left: 100px; width: 200px">
             <button type="button" class="button left selected" on:click={onAdd}>Add</button>

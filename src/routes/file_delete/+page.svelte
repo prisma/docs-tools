@@ -54,11 +54,11 @@
 <div style="margin-left: 10px;">
     <h1 style="color: #eceff4;">File Delete Paths</h1>
     <form on:submit|preventDefault={onAdd}>
-        <label>name*</label>
+        <label>Name*</label>
         <input type="text" class="inner-each top selected" bind:value={fileDeletePath.name}>
-        <label>path</label>
+        <label>Current Path</label>
         <input type="text" class="inner-each middle selected" bind:value={fileDeletePath.path}>
-        <label>redirect*</label>
+        <label>Redirect*</label>
         <input type="text" class="inner-each middle selected" bind:value={fileDeletePath.redirect}>
         <div style="display: flex; flex-direction: row; margin-left: 100px; width: 200px">
             <button type="button" class="button left selected" on:click={onAdd}>Add</button>
