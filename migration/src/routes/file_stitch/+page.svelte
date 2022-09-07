@@ -8,7 +8,7 @@
     let filePath: FilePath = {
         new_path: "",
         name: "",
-        header: [""],
+        header: [["", ""]],
         body: [{
                 index: 0,
                 key: "",
@@ -22,7 +22,7 @@
         filePath = {
             new_path: "",
             name: "",
-            header: [""],
+            header: [["", ""]],
             body: [{
                 index: 0,
                 key: "",
@@ -32,6 +32,22 @@
     }
 
     function onSubmit() {
+        let requestcontents = [];
+        for (let i = 0; i < filePaths.length; i++) {
+            interface header {
+                [key: string]: any;
+            }
+            let header : header = {};
+            for (let j = 0; j < filePaths[i].header.length; j++) {
+                header[filePaths[i].header[j][0]] = filePaths[i].header[j][1];
+            }
+            requestcontents.push({
+                name: filePaths[i].name,
+                new_path: filePaths[i].new_path,
+                header: header,
+                body: filePaths[i].body,
+            });
+        }
         let response = fetch("/api/file_stitched_paths", {
             method: "PUT",
             headers: {
