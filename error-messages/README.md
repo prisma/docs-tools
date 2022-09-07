@@ -1,6 +1,6 @@
 ## Error messages script
 
-This script is sued to autogenerate the [Error Reference page](http://localhost:8000/reference/api-reference/error-reference) from the error text in the code repos.
+This script autogenerates the [error reference page](https://www.prisma.io/docs/reference/api-reference/error-reference) from the error text in the code repos.
 
 To run it:
 
@@ -9,4 +9,4 @@ To run it:
 - Copy the [error_code_parser script](https://github.com/prisma/docs-tools/blob/main/error-messages/error_code_parser.py) into a directory somewhere
 - Inside that directory, run `python3 error_code_parser.py`
 
-This will output the error text to copy into `content/400-reference/250-error-reference.mdx`
+This outputs the error text. Copy this error text into `content/400-reference/250-error-reference.mdx`.
