@@ -16,7 +16,6 @@
     };
 
     function onAdd() {
-        console.log(filePath);
         filePaths.push(filePath);
         filePaths = filePaths;
         filePath = {
@@ -48,6 +47,7 @@
                 body: filePaths[i].body,
             });
         }
+        console.log(requestcontents);
         let response = fetch("/api/file_stitched_paths", {
             method: "PUT",
             headers: {
@@ -56,7 +56,7 @@
             body: JSON.stringify(requestcontents),
         }).then(response => {
             response.json().then((data) => {
-                filePaths = filePaths.filter((Entry, index) => JSON.parse(data)[index] !== "OK")
+                filePaths = filePaths.filter((Entry, index) => data[index] !== "OK")
             });
         });
     }
