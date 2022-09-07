@@ -53,7 +53,7 @@
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(filePaths)
+            body: JSON.stringify(requestcontents),
         }).then(response => {
             response.json().then((data) => {
                 filePaths = filePaths.filter((Entry, index) => JSON.parse(data)[index] !== "OK")
