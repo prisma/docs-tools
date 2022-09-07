@@ -5,6 +5,6 @@ export interface BodyPart {
 export interface FilePath { 
     new_path: string;
     name?: string;
-    headers: string[];
+    header: string[];
     body: BodyPart[];
 };

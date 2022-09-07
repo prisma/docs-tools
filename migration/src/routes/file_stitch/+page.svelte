@@ -8,7 +8,7 @@
     let filePath: FilePath = {
         new_path: "",
         name: "",
-        headers: [""],
+        header: [""],
         body: [{
                 index: 0,
                 key: "",
@@ -22,7 +22,7 @@
         filePath = {
             new_path: "",
             name: "",
-            headers: [""],
+            header: [""],
             body: [{
                 index: 0,
                 key: "",
