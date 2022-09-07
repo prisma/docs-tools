@@ -2,7 +2,7 @@
     import Selector from "./selector.svelte";
 </script>
 
-<Selector items={[{name: "File Move", link: "/file_move"}, {name: "File Surgery", link: "/file_surgery"}, {name: "File Delete", link: "/file_delete"}]}/>
+<Selector items={[{name: "File Move", link: "/file_move"}, {name: "File Surgery", link: "/file_surgery"}, {name: "File Delete", link: "/file_delete"}, {name: "File Stitch", link: "/file_stitch"}]}/>
 <slot></slot>
 
 <style lang="scss">
