@@ -1,67 +1,57 @@
 <script lang="ts">
+    import type {FilePath} from "./common"
     import "../pages.scss";
-    import Entries from "../entries.svelte";
+    import Entry from "./entry.svelte";
 
-    interface FileDeletePath {
-        [key: string]: string | undefined;
-        path: string;
-        redirect?: string;
-        name?: string;
-    }
-
-    interface FileDeletePaths {
-        data: FileDeletePath[];
-    }
-
-    let fileDeletePath: FileDeletePath = {
-        path: "",
+    let filePath: FilePath = {
+        current_path: "",
         redirect: "",
         name: ""
     };
 
-    let fileDeletePaths: FileDeletePaths = {
-        data: []
-    };
+    let filePaths: FilePath[] = []
 
     function onAdd() {
-        if (fileDeletePath.name === "") {
-            delete fileDeletePath.name;
+        if (filePath.name === "") {
+            delete filePath.name;
         }
-        if (fileDeletePath.redirect === "") {
-            delete fileDeletePath.redirect;
-        }
-        fileDeletePaths.data.push(fileDeletePath);
-        fileDeletePaths = fileDeletePaths;
-        fileDeletePath = {
-            path: "",
+        filePaths.push(filePath);
+        filePaths = filePaths;
+        filePath = {
+            current_path: "",
             redirect: "",
             name: ""
         };
     }
 
     function onSubmit() {
-        let response = fetch("/api/file_move_paths", {
+        let response = fetch("/api/file_delete_paths", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(fileDeletePaths)
+            body: JSON.stringify(filePaths)
         });
-        fileDeletePaths.data = [];
+        filePaths = [];
     }
 </script>
 
 <div style="margin-left: 10px;">
     <h1 style="color: #eceff4;">File Delete Paths</h1>
-    <input type="text" class="inner-each top selected" placeholder="Name*" bind:value={fileDeletePath.name}>
-    <input type="text" class="inner-each middle selected" placeholder="Current Path" bind:value={fileDeletePath.path}>
-    <input type="text" class="inner-each middle selected" placeholder="Redirect*" bind:value={fileDeletePath.redirect}>
-    <div style="display: flex; flex-direction: row; width: 200px">
-        <button type="button" class="button left selected" on:click={onAdd}>Add</button>
-        <button type="button" class="button right selected" on:click={onSubmit}>Submit</button>
+    <div class="m-2">
+        <Entry bind:entry={filePath} type="selected"/>
+        <div class="flex w-96">
+            <button type="button" class="w-full button left selected" on:click={onAdd}>
+                Add
+            </button>
+            <button type="button" class="w-full button right selected" on:click={onSubmit}>
+                Submit
+            </button>
+        </div>
     </div>
-</div>
-
-<div style="margin-left: 10px;">
-    <Entries entries={fileDeletePaths} items={["name", "path", "redirect"]}/>
+    {#each filePaths as entry}
+    <div class="m-2">
+        <Entry bind:entry={entry} type=""/>
+    </div>
+    {/each}
 </div>
