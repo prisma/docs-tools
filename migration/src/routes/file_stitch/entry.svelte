@@ -34,8 +34,8 @@
             {:else}
                 <div class="flex-none w-9 h-9"></div>
             {/if}
-            <input bind:value={entry.header[index][0]} placeholder="Header" class={"flex-auto h-9 field single " + type}>
-            <input bind:value={entry.header[index][1]} placeholder="" class={"flex-auto h-9 field single " + type}>
+            <input bind:value={entry.header[index][0]} placeholder="Header" class={"flex-auto h-9 field single w-36 " + type}>
+            <input bind:value={entry.header[index][1]} placeholder="" class={"flex-auto h-9 field single w-36 " + type}>
             <button type="button" class="flex-none w-9 h-9" on:click={()=>{entry.header.splice(index, 1);  if (entry.header.length <= 0) {entry.header = [["", ""]]}; entry = entry }}>-</button>
         </div>
     {/each}

@@ -40,7 +40,7 @@
     <h1 style="color: #eceff4;">File Move Paths</h1>
     <div class="m-2">
         <Entry bind:entry={filePath} type="selected"/>
-        <div class="flex w-72">
+        <div class="flex w-96">
             <button type="button" class="w-full button left selected" on:click={onAdd}>
                 Add
             </button>
