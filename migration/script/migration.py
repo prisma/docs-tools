@@ -137,7 +137,7 @@ delete_string = ""
 for i in deletes:
     delete_string += f"createRedirect({{fromPath: `{i}`,toPath: `/410`,statusCode: 410}})\n"
 with open(new_gatsby_node, 'a') as f:
-    f.write(delete_string)
+    pass#f.write(delete_string)
 
 ## add redirects to vercel.json
 redirect_file = {}
