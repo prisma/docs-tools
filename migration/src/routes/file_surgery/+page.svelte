@@ -1,71 +1,59 @@
 <script lang="ts">
+    import type {FilePath} from "./common"
     import "../pages.scss";
-    import Entries from "../entries.svelte";
+    import Entry from "./entry.svelte";
 
-    interface FileSurgeryPath {
-        [key: string]: string | undefined;
-        current: string;
-        new: string;
-        redirect?: string;
-        name?: string;
-    }
-
-    interface FileSurgeyPaths {
-        data: FileSurgeryPath[];
-    }
-
-    let fileSurgeryPath: FileSurgeryPath = {
-        current: "",
-        new: "",
+    let filePath: FilePath = {
+        current_path: "",
+        new_path: "",
+        name: "",
         redirect: "",
-        name: ""
     };
 
-    let fileSurgeryPaths: FileSurgeyPaths = {
-        data: []
-    };
+    let filePaths: FilePath[] = []
 
     function onAdd() {
-        if (fileSurgeryPath.name === "") {
-            delete fileSurgeryPath.name;
+        if (filePath.name === "") {
+            delete filePath.name;
         }
-        if (fileSurgeryPath.redirect === "") {
-            delete fileSurgeryPath.redirect;
-        }
-        fileSurgeryPaths.data.push(fileSurgeryPath);
-        fileSurgeryPaths = fileSurgeryPaths;
-        fileSurgeryPath = {
-            current: "",
-            new: "",
+        filePaths.push(filePath);
+        filePaths = filePaths;
+        filePath = {
+            current_path: "",
+            new_path: "",
+            name: "",
             redirect: "",
-            name: ""
         };
     }
 
     function onSubmit() {
-        let response = fetch("/api/file_surgery_paths", {
+        let response = fetch("/api/file_move_paths", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(fileSurgeryPaths)
+            body: JSON.stringify(filePaths)
         });
-        fileSurgeryPaths.data = [];
+        filePaths = [];
     }
 </script>
 
 <div style="margin-left: 10px;">
-    <h1 style="color: #eceff4;">File Move Paths</h1>
-    <input type="text" class="inner-each top selected" placeholder="Name*" bind:value={fileSurgeryPath.name}>
-    <input type="text" class="inner-each middle selected" placeholder="Current Path" bind:value={fileSurgeryPath.current}>
-    <input type="text" class="inner-each middle selected" placeholder="New Path" bind:value={fileSurgeryPath.new}>
-    <input type="text" class="inner-each middle selected" placeholder="Redirect*" bind:value={fileSurgeryPath.redirect}>
-    <div style="display: flex; flex-direction: row; width: 200px">
-        <button type="button" class="button left selected" on:click={onAdd}>Add</button>
-        <button type="button" class="button right selected" on:click={onSubmit}>Submit</button>
+    <h1 style="color: #eceff4;">File Surgery Paths</h1>
+    <div class="m-2">
+        <Entry bind:entry={filePath} type="selected"/>
+        <div class="flex w-96">
+            <button type="button" class="w-full button left selected" on:click={onAdd}>
+                Add
+            </button>
+            <button type="button" class="w-full button right selected" on:click={onSubmit}>
+                Submit
+            </button>
+        </div>
     </div>
-</div>
-
-<div style="margin-left: 10px;">
-    <Entries entries={fileSurgeryPaths} items={["name", "current", "new", "redirect"]}/>
+    {#each filePaths as entry}
+    <div class="m-2">
+        <Entry bind:entry={entry} type=""/>
+    </div>
+    {/each}
 </div>

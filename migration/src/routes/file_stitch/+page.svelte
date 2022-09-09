@@ -1,64 +1,84 @@
 <script lang="ts">
+    import type {BodyPart, FilePath} from "./common";
     import "../pages.scss";
-    import Entry from "./stitch_entry.svelte"
-   
-    interface BodyPart {
-        index: number;
-        key: string;
-    }
-    interface FileStitchPath { 
-        new_path: string;
-        name?: string;
-        headers: string[]; 
-        body: BodyPart[];
-    };
+    import Entry from "./entry.svelte"
 
-    let fileStitchPaths: FileStitchPath[] = [];
+    let filePaths: FilePath[] = [];
 
-    let fileStitchPath: FileStitchPath = {
+    let filePath: FilePath = {
         new_path: "",
         name: "",
-        headers: [],
-        body: [],
+        header: [["", ""]],
+        body: [{
+                index: 0,
+                key: "",
+            }],
     };
 
     function onAdd() {
-        if (fileStitchPath.name === "") { delete fileStitchPath.name; }
-        fileStitchPaths.push(fileStitchPath);
-        fileStitchPaths = fileStitchPaths;
-        fileStitchPath = {
+        filePaths.push(filePath);
+        filePaths = filePaths;
+        filePath = {
             new_path: "",
             name: "",
-            headers: [],
-            body: [],
+            header: [["", ""]],
+            body: [{
+                index: 0,
+                key: "",
+            }],
         };
+        filePath = filePath;
     }
 
     function onSubmit() {
+        let requestcontents = [];
+        for (let i = 0; i < filePaths.length; i++) {
+            interface header {
+                [key: string]: any;
+            }
+            let header : header = {};
+            for (let j = 0; j < filePaths[i].header.length; j++) {
+                header[filePaths[i].header[j][0]] = filePaths[i].header[j][1];
+            }
+            requestcontents.push({
+                name: filePaths[i].name,
+                new_path: filePaths[i].new_path,
+                header: header,
+                body: filePaths[i].body,
+            });
+        }
+        console.log(requestcontents);
         let response = fetch("/api/file_stitched_paths", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(fileStitchPaths)
+            body: JSON.stringify(requestcontents),
+        }).then(response => {
+            response.json().then((data) => {
+                filePaths = filePaths.filter((Entry, index) => data[index] !== "OK")
+            });
         });
-        fileStitchPaths = [];
     }
 </script>
 
 <div style="margin-left: 10px;">
-    <h1 style="color: #eceff4;">File Move Paths</h1>
-    <Entry entry={fileStitchPath} type="selected"/>
-    <div class="flex w-72">
-        <button class="w-full button left selected" onclick={onAdd}>
-            Add
-        </button>
-        <button class="w-full button right selected" onclick={onSubmit}>
-            Submit
-        </button>
+    <h1 style="color: #eceff4;">File Stitch Paths</h1>
+    <div class="m-2">
+        <Entry bind:entry={filePath} type="selected"/>
+        <div class="flex w-96">
+            <button type="button" class="w-full button left selected" on:click={onAdd}>
+                Add
+            </button>
+            <button type="button" class="w-full button right selected" on:click={onSubmit}>
+                Submit
+            </button>
+        </div>
     </div>
-    {#each fileStitchPaths as entry}
-        <Entry entry={entry} type=""/>
+    {#each filePaths as entry}
+    <div class="m-2">
+        <Entry bind:entry={entry} type=""/>
+    </div>
     {/each}
 </div>
 

@@ -1,37 +1,25 @@
 <script lang="ts">
+    import type {FilePath} from "./common"
     import "../pages.scss";
-    import Entries from "../entries.svelte";
+    import Entry from "./entry.svelte";
 
-    interface FileMovePath {
-        [key: string]: string | undefined;
-        current: string;
-        new: string;
-        name?: string;
-    }
-
-    interface FileMovePaths {
-        data: FileMovePath[];
-    }
-
-    let fileMovePath: FileMovePath = {
-        current: "",
-        new: "",
+    let filePath: FilePath = {
+        current_path: "",
+        new_path: "",
         name: ""
     };
 
-    let fileMovePaths: FileMovePaths = {
-        data: []
-    };
+    let filePaths: FilePath[] = []
 
     function onAdd() {
-        if (fileMovePath.name === "") {
-            delete fileMovePath.name;
+        if (filePath.name === "") {
+            delete filePath.name;
         }
-        fileMovePaths.data.push(fileMovePath);
-        fileMovePaths = fileMovePaths;
-        fileMovePath = {
-            current: "",
-            new: "",
+        filePaths.push(filePath);
+        filePaths = filePaths;
+        filePath = {
+            current_path: "",
+            new_path: "",
             name: ""
         };
     }
@@ -42,24 +30,28 @@
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(fileMovePaths)
+            body: JSON.stringify(filePaths)
         });
-        fileMovePaths.data = [];
+        filePaths = [];
     }
 </script>
 
 <div style="margin-left: 10px;">
     <h1 style="color: #eceff4;">File Move Paths</h1>
-    <input type="text" class="inner-each top selected" placeholder="Name*" bind:value={fileMovePath.name}>
-    <input type="text" class="inner-each middle selected" placeholder="Current Path" bind:value={fileMovePath.current}>
-    <input type="text" class="inner-each middle selected" placeholder="New Path" bind:value={fileMovePath.new}>
-    <div style="display: flex; flex-direction: row; width: 200px">
-        <button type="button" class="button left selected" on:click={onAdd}>Add</button>
-        <button type="button" class="button right selected" on:click={onSubmit}>Submit</button>
+    <div class="m-2">
+        <Entry bind:entry={filePath} type="selected"/>
+        <div class="flex w-96">
+            <button type="button" class="w-full button left selected" on:click={onAdd}>
+                Add
+            </button>
+            <button type="button" class="w-full button right selected" on:click={onSubmit}>
+                Submit
+            </button>
+        </div>
     </div>
-
-</div>
-
-<div style="margin-left: 10px;">
-    <Entries entries={fileMovePaths} items={["name", "current", "new"]}/>
+    {#each filePaths as entry}
+    <div class="m-2">
+        <Entry bind:entry={entry} type=""/>
+    </div>
+    {/each}
 </div>
