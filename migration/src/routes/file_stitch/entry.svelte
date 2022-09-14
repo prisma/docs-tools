@@ -25,8 +25,9 @@
 </script>
 
 <div class="w-96">
-    <input bind:value={entry.name} placeholder="Name" class={"relative w-full h-9 field top " + type}>
-    <input bind:value={entry.new_path} placeholder="Path" class={"relative w-full h-9 field bottom " + type}>
+    <input bind:value={entry.name} placeholder="Name*" class={"relative w-full h-9 field top " + type}>
+    <input bind:value={entry.new_path} placeholder="Path (file path)" class={"relative w-full h-9 field bottom " + type}>
+    <div class={"flex-auto h-7 ml-3 box single " + type}>Headers:</div>
     {#each entry.header as _, index}
         <div class="relative w-full flex">
             {#if index === 0}
@@ -39,6 +40,7 @@
             <button type="button" class="flex-none w-9 h-9" on:click={()=>{entry.header.splice(index, 1);  if (entry.header.length <= 0) {entry.header = [["", ""]]}; entry = entry }}>-</button>
         </div>
     {/each}
+    <div class={"flex-auto h-7 ml-3 box single " + type}>Body:</div>
     {#each entry.body as _, index}
         <div class="relative w-full flex">
             {#if index === 0}
@@ -46,7 +48,7 @@
             {:else}
                 <div class="flex-none w-9 h-9"></div>
             {/if}
-            <input bind:value={entry.body[index].key} placeholder="Body" class={"flex-auto h-9 field single " + type}>
+            <input bind:value={entry.body[index].key} placeholder="Surgery File Path (file path)" class={"flex-auto h-9 field single " + type}>
             <input type="number" bind:value={entry.body[index].index} class={"flex-none h-9 w-12 field single " + type}>
             <button type="button" class="flex-none w-9 h-9" on:click={()=>{entry.body.splice(index, 1); if (entry.body.length <= 0) {entry.body = [{index: 0, key: ""}]}; entry = entry}}>-</button>
         </div>
