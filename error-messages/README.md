@@ -9,4 +9,4 @@ To run it:
 - Copy the [error_code_parser script](https://github.com/prisma/docs-tools/blob/main/error-messages/error_code_parser.py) into a directory somewhere
 - Inside that directory, run `python3 error_code_parser.py`
 
-This outputs the error text. Copy this error text into `content/400-reference/250-error-reference.mdx`.
+This outputs the error text. Copy this error text into `content/400-reference/200-api-reference/250-error-reference.mdx`.

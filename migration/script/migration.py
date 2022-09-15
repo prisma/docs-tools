@@ -135,9 +135,9 @@ deletes = [i for i in deletes if i not in [format_redirect(i) for i in file_move
 ## add deletes to gatsby-node.js
 delete_string = ""
 for i in deletes:
-    delete_string += f"createRedirect(\{{fromPath: `{i}`,toPath: `/410`,statusCode: 410}})\n"
+    delete_string += f"createRedirect({{fromPath: `{i}`,toPath: `/410`,statusCode: 410}})\n"
 with open(new_gatsby_node, 'a') as f:
-    f.write(delete_string)
+    pass#f.write(delete_string)
 
 ## add redirects to vercel.json
 redirect_file = {}
