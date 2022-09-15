@@ -8,7 +8,11 @@
     let filePath: FilePath = {
         new_path: "",
         name: "",
-        header: [["", ""]],
+        header: [
+            ["title", ""],
+            ["metaTitle", ""],
+            ["metaDescription", ""]
+        ],
         body: [{
                 index: 0,
                 key: "",
@@ -21,7 +25,11 @@
         filePath = {
             new_path: "",
             name: "",
-            header: [["", ""]],
+            header: [
+                ["title", ""],
+                ["metaTitle", ""],
+                ["metaDescription", ""]
+            ],
             body: [{
                 index: 0,
                 key: "",
@@ -67,19 +75,21 @@
     <div class="m-2">
         <Entry bind:entry={filePath} type="selected"/>
         <div class="flex w-96">
-            <button type="button" class="w-full button left selected" on:click={onAdd}>
+            <button type="button" class="w-full button selected" on:click={onAdd}>
                 Add
             </button>
-            <button type="button" class="w-full button right selected" on:click={onSubmit}>
+        </div>
+        {#each filePaths as entry, index}
+            <div class={"flex-auto h-7 box single"}>{index}:</div>
+            <Entry bind:entry={entry} type=""/>
+        {/each}
+        <div class={"flex-auto h-2 box single"}></div>
+        <div class="flex w-96">
+            <button type="button" class="w-full button" on:click={onSubmit}>
                 Submit
             </button>
         </div>
     </div>
-    {#each filePaths as entry}
-    <div class="m-2">
-        <Entry bind:entry={entry} type=""/>
-    </div>
-    {/each}
 </div>
 
 <div style="margin-left: 10px;">
