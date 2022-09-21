@@ -1,7 +1,7 @@
 cd repo/main
 git pull
-cd ../staging
+cd ../staging-data
 git pull
 git merge main
-git push --set-upstream origin staging
+git push --set-upstream origin staging-data
 cd ../..
