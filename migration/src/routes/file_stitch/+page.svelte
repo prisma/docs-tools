@@ -45,14 +45,20 @@
                 [key: string]: any;
             }
             let header : header = {};
+            let body: BodyPart[] = [];
             for (let j = 0; j < filePaths[i].header.length; j++) {
                 header[filePaths[i].header[j][0]] = filePaths[i].header[j][1];
+            }
+            for (let j = 0; j < filePaths[i].body.length; j++) {
+                if (filePaths[i].body[j].key !== "") {
+                    body.push(filePaths[i].body[j]);
+                }
             }
             requestcontents.push({
                 name: filePaths[i].name,
                 new_path: filePaths[i].new_path,
-                header: header.filter((item: string) => header[item] !== ""),
-                body: filePaths[i].body.filter((item: BodyPart) => item.key !== ""),
+                header: header,
+                body: body,
             });
         }
         console.log(requestcontents);
