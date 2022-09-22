@@ -27,7 +27,7 @@
     }
 
     function onSubmit() {
-        let response = fetch("/api/file_move_paths", {
+        let response = fetch("/api/file_surgery_paths", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
