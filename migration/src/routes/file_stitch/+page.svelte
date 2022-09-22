@@ -51,8 +51,8 @@
             requestcontents.push({
                 name: filePaths[i].name,
                 new_path: filePaths[i].new_path,
-                header: header,
-                body: filePaths[i].body,
+                header: header.filter((item: string) => header[item] !== ""),
+                body: filePaths[i].body.filter((item: BodyPart) => item.key !== ""),
             });
         }
         console.log(requestcontents);
