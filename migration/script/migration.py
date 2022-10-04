@@ -132,20 +132,16 @@ deletes = [format_redirect(i) for i in deletes if i not in redirects.keys()]
 redirects = {i:j for i, j in redirects.items() if i not in [format_redirect(i) for i in file_move_paths.values()] and i not in [i["new_path"] for i in file_stitched_paths]}
 deletes = [i for i in deletes if i not in [format_redirect(i) for i in file_move_paths.values()] and i not in [i["new_path"] for i in file_stitched_paths]]
 
-## add deletes to gatsby-node.js
-delete_string = ""
-for i in deletes:
-    delete_string += f"createRedirect({{fromPath: `{i}`,toPath: `/410`,statusCode: 410}})\n"
-with open(new_gatsby_node, 'a') as f:
-    pass#f.write(delete_string)
-
-## add redirects to vercel.json
+## add redirects and deletes to vercel.json
 redirect_file = {}
 with open(new_vercel, 'r') as f:
     redirect_file = json.loads(f.read())
 
 for i, j in redirects.items():
-    redirect_file["redirects"].append({"source": i, "desination": j})
+    redirect_file["redirects"].append({"source": i, "destination": j})
+    
+for i in deletes:
+    redirect_file["redirects"].append({"source": i, "destination": "/410", "statusCode": 410})
 
 with open(new_vercel, 'w') as f:
     f.write(json.dumps(redirect_file, indent=4))
