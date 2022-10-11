@@ -144,6 +144,21 @@ for i in deletes:
 with open(new_vercel, 'w') as f:
     f.write(json.dumps(redirect_file, indent=4))
 
+# Fix broken links
+for root, dirs, files in os.walk(new_content_dir): 
+    for file in files:
+        path = os.path.join(root, file)[len(new_content_dir) :].replace("\\", "/")
+        if path[-4:] == ".mdx":
+            print("Fixing links in " + path)
+            f = open(new_content_dir + path, "r", encoding="utf8")
+            filedata = f.read()
+            f.close()
+            for old, new in redirects.items():
+                filedata.replace("(" + old + ")", "(" + new + ")")
+            f = open(new_content_dir + path, "w", encoding="utf8")
+            f.write(filedata)
+            f.close()
+
 # clean up
 print("\ncleaning up")
 shutil.rmtree(surgery_dir)
