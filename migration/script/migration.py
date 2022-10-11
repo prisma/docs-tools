@@ -86,8 +86,6 @@ print("\nfinished stitching")
 # edit redirects
 os.makedirs(os.path.dirname(new_vercel), exist_ok=True)
 shutil.copy(old_vercel, new_vercel)
-os.makedirs(os.path.dirname(new_gatsby_node), exist_ok=True)
-shutil.copy(old_gatsby_node, new_gatsby_node)
 
 ## add redirects from moves
 redirects: Dict[str, str] = {}
