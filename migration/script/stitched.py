@@ -20,7 +20,7 @@ class stitched:
         self.dest = dest
 
     def construct(self, v=False):
-        if v: print("stitching {}".format(self.dest))
+        if v: print("\033[0;32mstitching\033[0m {}".format(self.dest))
         os.makedirs(
             os.path.dirname(new_content_dir + self.dest), exist_ok=True
         )

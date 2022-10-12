@@ -18,13 +18,23 @@ file_surgery_paths: Dict[str, Tuple[str, str | None]] = get_file_surgery_paths()
 file_delete_paths: Dict[str, str | None] = get_file_delete_paths()
 
 
+
+print("\033[0;36mClearing new directory...\033[0m")
+
 # clear new directory
-print("\nClearing new directory...")
 shutil.rmtree(new_content_dir)
-print("Done clearing new directory.\n")
+
+print("\033[0;36mDone clearing new directory\033[0m")
+
+
+
+print()
+
+
+
+print("\033[0;36mCopying started...\033[0m")
 
 # move files around
-print("copying started...\n")
 
 ## add all unmoved files as their current directory
 for root, dirs, files in os.walk(old_content_dir):
@@ -45,7 +55,7 @@ for old, new in file_move_paths.items(): ### move files from old to new
 
     os.makedirs(os.path.dirname(new), exist_ok=True)
     shutil.copy(old, new)
-    print("from  {}\nto    {}".format(old, new))
+    print("\033[0;32mfrom\033[0m  {}\n\033[0;32mto\033[0m    {}".format(old, new))
 
 for old, (new, redirect) in file_surgery_paths.items(): ### move files from old to surgery
     old = old_content_dir + old
@@ -53,14 +63,19 @@ for old, (new, redirect) in file_surgery_paths.items(): ### move files from old 
 
     os.makedirs(os.path.dirname(new), exist_ok=True)
     shutil.copy(old, new)
-    print("from  {}\nto    {}".format(old, new))
+    print("\033[0;32mfrom\033[0m  {}\n\033[0;32mto\033[0m    {}".format(old, new))
 
-print("\nfinished copying")
+print("\033[0;36mFinished copying\033[0m")
 
 
-# stitch together sugery files
-print("stitching started...\n")
 
+print()
+
+
+
+print("\033[0;36mStitching started...\033[0m")
+
+# stitch together surgery files
 ## make sure surgery directory exists
 os.makedirs(surgery_dir, exist_ok=True) 
 
@@ -78,10 +93,19 @@ file_stitched_paths = get_stitched_files(surgery_files)
 
 file_stitched: List[stitched] = [stitched(i["new_path"], i["header"], i["body"]) for i in file_stitched_paths]
 
-for i in file_stitched: i.construct(True)
+for i in file_stitched:
+    i.construct()
+    print("\033[0;32mstitching\033[0m {}".format(i.dest))
 
-print("\nfinished stitching")
+print("\033[0;36mFinished stitching\033[0m")
 
+
+
+print()
+
+
+
+print("\033[0;36mAdding redirects...\033[0m")
 
 # edit redirects
 os.makedirs(os.path.dirname(new_vercel), exist_ok=True)
@@ -144,22 +168,43 @@ for i in deletes:
 with open(new_vercel, 'w') as f:
     f.write(json.dumps(redirect_file, indent=4))
 
+print("\033[0;36mAdded redirects\033[0m")
+
+
+
+print()
+
+
+
+print("\033[0;36mFixing broken links...\033[0m")
+
 # Fix broken links
 for root, dirs, files in os.walk(new_content_dir): 
     for file in files:
         path = os.path.join(root, file)[len(new_content_dir) :].replace("\\", "/")
         if path[-4:] == ".mdx":
-            print("Fixing links in " + path)
-            f = open(new_content_dir + path, "r", encoding="utf8")
-            filedata = f.read()
-            f.close()
+            with open(new_content_dir + path, "r", encoding="utf8") as f:
+                filedata = f.read()
+            newfiledata = filedata
             for old, new in redirects.items():
-                filedata.replace("(" + old + ")", "(" + new + ")")
+                newfiledata = newfiledata.replace("(" + old + ")", "(" + new + ")").replace("(" + old + "#", "(" + new + "#")
+                if newfiledata != filedata:
+                    print("\033[0;32mfixed links in\033[0m " + path + "\n\033[0;32mreplaced\033[0m       " + old + "\n\033[0;32mwith\033[0m           " + new)
             f = open(new_content_dir + path, "w", encoding="utf8")
-            f.write(filedata)
+            f.write(newfiledata)
             f.close()
 
+print("\033[0;36mFixed broken links\033[0m")
+
+
+
+print()
+
+
+
+print("\033[0;36mCleaning up...\033[0m")
+
 # clean up
-print("\ncleaning up")
 shutil.rmtree(surgery_dir)
-print("finished cleaning up")
+
+print("\033[0;36mFinished cleaning up\033[0m")
