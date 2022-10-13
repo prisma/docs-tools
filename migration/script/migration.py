@@ -187,7 +187,7 @@ for root, dirs, files in os.walk(new_content_dir):
                 filedata = f.read()
             newfiledata = filedata
             for old, new in redirects.items():
-                newfiledata = newfiledata.replace("(" + old + ")", "(" + new + ")").replace("(" + old + "#", "(" + new + "#")
+                newfiledata = newfiledata.replace("(" + old + ")", "(" + new + ")").replace("(" + old + "#", "(" + new + "#").replace("(" + old + "/)", "(" + new + "/)")
                 if newfiledata != filedata:
                     print("\033[0;32mfixed links in\033[0m " + path + "\n\033[0;32mreplaced\033[0m       " + old + "\n\033[0;32mwith\033[0m           " + new)
             f = open(new_content_dir + path, "w", encoding="utf8")
