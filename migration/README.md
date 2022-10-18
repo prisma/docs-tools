@@ -24,9 +24,9 @@ This repository contains the source code for the Prisma Docs Migration Script, t
 
 `python migration.py`
 
-Note: you might need to replace `python` with `python3` or `python3.10`, depending on how you installed it.
+Note: in the above command, you might need to replace `python` with `python3` or `python3.10`, depending on how you installed it.
 
-## How Does It Work
+## How Does It Work?
 
 - 'moves_list': A list of files to be moved and where to move them
 - 'deletes_list': A list of files to be deleted and where to redirect them to
@@ -39,13 +39,13 @@ Note: you might need to replace `python` with `python3` or `python3.10`, dependi
     * Get 'deletes' from the database and add them to 'deletes_list'
     * Get 'surgeries' from the database and add them to 'surgery_list'
     * Get 'stitches' from the database and add them to 'stitch_list'
-2. Add all files not references in 'moves_list', 'deletes_list', or 'surgery_list' to 'moves_list' at their current path
+2. Add all files that are not references in 'moves_list', 'deletes_list', or 'surgery_list' to 'moves_list' at their current path
 3. Move all files in 'moves_list' to their new locations
 4. Move all files in 'surgery_list' to a temporary surgery directory
 5. Load all surgery files into memory and slice them at predetermined points
 6. Use stitch_list to contruct new files from the pieces of the surgery files
 7. Generate redirects and add them to 'redirects_list'
-    * From the current url to the new url using 'moves_list'
-    * From the current url to the redirect if it exists, or the 410 page if it doesnt using 'deletes_list' and 'surgery_list'
+    * From the current url to the new url with 'moves_list'
+    * From the current url to the redirect if it exists, or the 410 page if it doesnt with 'deletes_list' and 'surgery_list'
 8. Add the redirects from 'redirects_list' to 'vercel.json'
 9. Use 'redirects_list' to go through all of the files and fix any broken links
