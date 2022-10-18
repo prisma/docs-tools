@@ -16,7 +16,7 @@ This repository contains the source code for the Prisma Docs Migration Script, t
 
 ### Setup
 
-- Copy the contents `migration/script` from [prisma/docs-tools](https://github.com/prisma/docs-tools)
+- Copy `migration/script` from [prisma/docs-tools](https://github.com/prisma/docs-tools)
 - Clone `staging-data` into `./staging-data` with `git clone --branch staging-data https://github.com/prisma/docs` from [prisma/docs](https://github.com/prisma/docs)
 - Clone `staging` into `./staging` with `git clone --branch staging https://github.com/prisma/docs` from [prisma/docs](https://github.com/prisma/docs)
 
