@@ -28,11 +28,15 @@ Note: in the above command, you might need to replace `python` with `python3` or
 
 ## How Does It Work?
 
+### Variables:
+
 - 'moves_list': A list of files to be moved and where to move them
 - 'deletes_list': A list of files to be deleted and where to redirect them to
 - 'surgery_list': A list of files to be cut up and where to redirect them to
 - 'stitch_list': A list of new files to be made out of the cut up parts of surgery files
 - 'redirects_list': A list of redirects
+
+### Steps:
 
 1. Get data from the database
     * Get 'moves' from the database and add them to 'moves_list'
