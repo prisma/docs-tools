@@ -12,6 +12,11 @@ app = Flask(__name__)
 def catch_all(path):
     from flask import request
 
+    collection = "file_surgery_paths"
+    if request.headers.get("database"):
+        collection += "_"
+        collection += request.headers.get("database")
+
     surgery_type = {
         "_id": [str, NoneType],
         "name": [str, NoneType],
