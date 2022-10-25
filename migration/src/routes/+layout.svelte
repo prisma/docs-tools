@@ -1,8 +1,11 @@
 <script lang="ts">
     import Selector from "./selector.svelte";
+    import {database, setDatabase} from "../global";
+    let _database = database;
 </script>
 
 <Selector items={[{name: "File Move", link: "/file_move"}, {name: "File Delete", link: "/file_delete"}, {name: "File Surgery", link: "/file_surgery"}, {name: "File Stitch", link: "/file_stitch"}]}/>
+<input bind:value={_database} on:input={() => {setDatabase(_database)}}/>
 <slot></slot>
 
 <style lang="scss">

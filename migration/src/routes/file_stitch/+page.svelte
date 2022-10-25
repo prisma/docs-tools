@@ -2,6 +2,7 @@
     import type {BodyPart, FilePath} from "./common";
     import "../pages.scss";
     import Entry from "./entry.svelte"
+    import {database} from "../../global";
 
     let filePaths: FilePath[] = [];
 
@@ -65,6 +66,7 @@
         let response = fetch("/api/file_stitched_paths", {
             method: "PUT",
             headers: {
+                ...((database != "") && {"database": database}),
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(requestcontents),
