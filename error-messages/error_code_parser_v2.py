@@ -22,7 +22,7 @@ FORMAT_REPLACE_LIST = [
 
 for url, title in ERROR_FILES:
     print("\n## ", title)
-    # Get contents of the file file
+    # Get contents of the file
     content = str(requests.get(url, allow_redirects=True).content)
     # Format content
     for before, after in FORMAT_REPLACE_LIST:
