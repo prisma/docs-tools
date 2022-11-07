@@ -1,3 +1,5 @@
+# This script is for generating error codes for the documentation
+# pyproject.toml holds the config for black
 import re
 import requests
 
