@@ -2,6 +2,7 @@
     import type {FilePath} from "./common"
     import "../pages.scss";
     import Entry from "./entry.svelte";
+    import {database} from "../../global";
 
     let filePath: FilePath = {
         current_path: "",
@@ -30,6 +31,7 @@
         let response = fetch("/api/file_surgery_paths", {
             method: "PUT",
             headers: {
+                ...((database != "") && {"database": database}),
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(filePaths)

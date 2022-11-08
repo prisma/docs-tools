@@ -33,7 +33,7 @@ def catch_all(path):
         response = []
         for i in body:
             try:
-                client.data{collection].insert_one(validate_type(i, surgery_type))
+                client.data[collection].insert_one(validate_type(i, surgery_type))
                 response.append("OK")
             except:
                 response.append("ERR")
