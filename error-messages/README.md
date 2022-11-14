@@ -1,12 +1,25 @@
-## Error messages script
+# Error messages script
 
 This script autogenerates the [error reference page](https://www.prisma.io/docs/reference/api-reference/error-reference) from the error text in the code repos.
 
-To run it:
+## Using the Script
 
-- Install the latest version of Python 3. (If you’re using [Homebrew](https://brew.sh/), you can do this with `brew install python`. Otherwise see instructions here.)
-- Install the `requests` dependency. You can do this with `python3 -m pip install requests` if you installed Python with Homebrew or otherwise have PIP installed. Other install methods are listed [here](https://docs.python-requests.org/en/latest/user/install/#install).
-- Copy the [error_code_parser script](https://github.com/prisma/docs-tools/blob/main/error-messages/error_code_parser.py) into a directory somewhere
-- Inside that directory, run `python3 error_code_parser.py`
+### Prerequisites
 
-This outputs the error text. Copy this error text into `content/400-reference/200-api-reference/250-error-reference.mdx`.
+- Python 3.x.x
+- Pip
+
+### Setup
+
+- Install dependancies with `python3 -m pip install -r requirements.txt`
+
+### Running the Script
+
+- Run `python3 error_code_parser_v2.py`
+- This prints the output text.
+  - Copy the output into `content/400-reference/200-api-reference/250-error-reference.mdx`
+  - Or pipe the output into a file with `python3 error_code_parser_v2.py > error_codes.md` and use the `error_codes.mdx` file (UNIX)
+
+### Working on the Script
+
+- Format the script before committing with `python3 -m black`
