@@ -18,8 +18,8 @@ This script autogenerates the [error reference page](https://www.prisma.io/docs/
 - Run `python3 error_code_parser_v2.py`
 - This prints the output text.
   - Copy the output into `content/400-reference/200-api-reference/250-error-reference.mdx`
-  - Or pipe the output into a file with `python3 error_code_parser_v2.py > error_codes.md` and use the `error_codes.mdx` file (UNIX)
+  - Or pipe the output into a file with `python3 error_code_parser_v2.py > error_codes.md` and copy from the new `error_codes.md` file (UNIX)
 
-### Working on the Script
+### Editing the Script
 
-- Format the script before committing with `python3 -m black`
+- Format the script before committing with `python3 -m black ./error_code_parser_v2.py`
