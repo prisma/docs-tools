@@ -5,7 +5,7 @@ from bson import ObjectId
 import json
 from flask import Flask, Response
 from api._util.validate import *
-import * from passtoken as pt
+import passtoken as pt
 app = Flask(__name__)
 
 @app.route('/', defaults={'path': ''}, methods=['PUT', 'POST', 'GET', 'DELETE'])

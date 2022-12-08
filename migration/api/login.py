@@ -1,4 +1,4 @@
-import * from passtoken as pt
+import passtoken as pt
 from flask import Flask, Response
 
 
