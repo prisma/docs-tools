@@ -12,9 +12,9 @@ app = Flask(__name__)
 @app.route('/<path:path>', methods=['PUT', 'POST', 'GET', 'DELETE'])
 def catch_all(path):
     auth = pt.init_auth(os.environ['POSTGRES_URL'], os.environ['REDIS_URL'])
+    from flask import request
     if not pt.verify_token(auth, request.headers.get('token')):
         return Response("Unauthorized", mimetype='text/plain', status=401)
-    from flask import request
     
     collection = "file_delete_paths"
     if request.headers.get("database"):
