@@ -1,0 +1,18 @@
+[package]
+name = "index"
+version = "1.0.0"
+authors = ["bama"]
+edition = "2021"
+
+[dependencies]
+core = { git = "https://github.com/ObamaTheLlama114/passtoken" }
+http = "0.1"
+vercel_lambda = "*"
+
+[lib]
+name = "util"
+path = "_util.rs"
+
+[[bin]]
+name = "index"
+path = "login.rs"
