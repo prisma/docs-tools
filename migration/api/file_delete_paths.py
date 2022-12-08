@@ -5,12 +5,16 @@ from bson import ObjectId
 import json
 from flask import Flask, Response
 from api._util.validate import *
+import passtoken as pt
 app = Flask(__name__)
 
 @app.route('/', defaults={'path': ''}, methods=['PUT', 'POST', 'GET', 'DELETE'])
 @app.route('/<path:path>', methods=['PUT', 'POST', 'GET', 'DELETE'])
 def catch_all(path):
+    auth = pt.init_auth(os.environ['POSTGRES_URL'], os.environ['REDIS_URL'])
     from flask import request
+    if not pt.verify_token(auth, request.headers.get('token')):
+        return Response("Unauthorized", mimetype='text/plain', status=401)
     
     collection = "file_delete_paths"
     if request.headers.get("database"):
