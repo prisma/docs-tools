@@ -8,7 +8,7 @@ dnspython = "*"
 pymongo = "*"
 flask = "*"
 bson = "*"
-passtoken = "*"
+passtoken = {file = "https://files.pythonhosted.org/packages/46/4d/d013c355ddc72d6d8f566844e68bdd8d1eb70dff92851b019a9b32b97193/passtoken-0.1.0-cp39-cp39-manylinux_2_28_x86_64.whl"}
 
 [dev-packages]
 
